@@ -1,0 +1,1767 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="21-第六章-K8s调度-Pod调度控制篇-20210611, Love">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>21-第六章-K8s调度-Pod调度控制篇-20210611 | Love</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Love</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Love</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">21-第六章-K8s调度-Pod调度控制篇-20210611</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/k8s/">
+                                <span class="chip bg-color">k8s</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/k8s/" class="post-category">
+                                k8s
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-06-19
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h3 id="第六章-K8s调度-Pod调度控制篇-20210611"><a href="#第六章-K8s调度-Pod调度控制篇-20210611" class="headerlink" title="第六章-K8s调度-Pod调度控制篇-20210611"></a>第六章-K8s调度-Pod调度控制篇-20210611</h3><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618190602971.png" alt="image-20210618190602971"></p>
+<h3 id="鸣谢：阿良老师"><a href="#鸣谢：阿良老师" class="headerlink" title="鸣谢：阿良老师"></a>鸣谢：<code>阿良老师</code></h3><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210619070750798.png" alt="image-20210619070750798"></p>
+<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><p>[TOC]</p>
+<h3 id="本章主要内容"><a href="#本章主要内容" class="headerlink" title="本章主要内容"></a>本章主要内容</h3><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210614210525278.png" alt="image-20210614210525278"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">第六章 Kubernetes调度</span><br><span class="line"></span><br><span class="line">• 创建一个Pod的工作流程</span><br><span class="line">• Pod中影响调度的主要属性</span><br><span class="line">• 资源限制对Pod调度的影响</span><br><span class="line">• nodeSelector &amp; nodeAffinity</span><br><span class="line">• Taints &amp; Tolerations</span><br><span class="line">• nodeName </span><br><span class="line">• DaemonSet控制器</span><br><span class="line">• 调度失败原因分析</span><br></pre></td></tr></table></figure>
+
+<h3 id="1、创建一个Pod的工作流程"><a href="#1、创建一个Pod的工作流程" class="headerlink" title="1、创建一个Pod的工作流程"></a>1、创建一个Pod的工作流程</h3><h4 id="1、理论"><a href="#1、理论" class="headerlink" title="1、理论"></a>1、理论</h4><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210614210643604.png" alt="image-20210614210643604"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">创建一个Pod的工作流程</span><br><span class="line"></span><br><span class="line">Kubernetes基于`list-watch机制`的控制器架构，实现组件间交互的解耦。</span><br><span class="line"></span><br><span class="line">其他组件监控自己负责的资源，当这些资源发生变化时，kube-apiserver会通知这些组件，这个过程类似于`发布与订阅`。</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、理论剖析过程"><a href="#2、理论剖析过程" class="headerlink" title="2、理论剖析过程"></a>2、理论剖析过程</h4><ul>
+<li>我们通过命令行创建一个pod：</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210614222733041.png" alt="image-20210614222733041"></p>
+<ul>
+<li>==问题来了==：那么在通过命令行或者apply yaml启动一个pod时，k8s集群的内部组件之间的工作流程是怎么样的呢？</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">这个过程类似于老板和顾客之间的关系:</span><br><span class="line">	api-server:开店老板</span><br><span class="line">	etcd：仓库</span><br><span class="line">	其他组件：顾客</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210615063225745.png" alt="image-20210615063225745"></p>
+<ul>
+<li>当我们在执行命令<code>kubectl run pod4 --image=nginx</code>后，各组件之间的调用流程是如何的呢？</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1、kubectl向apiserver发送一个创建pod的请求</span><br><span class="line">2、apiserver接收到并向etcd写入存储，写入成功返回一个提示</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210615063729371-1623710250391.png" alt="image-20210615063729371"></p>
+<ul>
+<li>注意：如果在执行如下<code>kubectl run pod4 --image=nginx</code>命令时，卡着了，说明什么问题呢？</li>
+</ul>
+<p>–&gt;说明：<br>==<strong>etcd数据库写入有问题/达到性能瓶颈；</strong><br><strong>api-server和etcd 2者总有一个有问题；</strong>==</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210615063918928.png" alt="image-20210615063918928"></p>
+<ul>
+<li>继续：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">3、scheduler向apiserver查询未分配的pod资源，通过自身调度算法选择一个合适的node进行绑定（给这个pod资源打一个标记，标记分配到node1）</span><br><span class="line"></span><br><span class="line">注意：它这个调度算法还是比较复杂、均匀一点的，它会考虑到你的机器的硬件配置，pod属性等等一些综合的属性；</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210615065028529.png" alt="image-20210615065028529"></p>
+<ul>
+<li>==问题==：如果scheduler组件有问题，那么此时pod会出现什么状态？</li>
+</ul>
+<p>答：pod会出现通过<code>kubectl get pod</code>根本看不到你刚创建的pod信息的，更别说它的状态了，因为它根本没分配。</p>
+<p>因此，如果你创建的pod信息根本看不到，那么会是哪个组件可能有问题？–&gt;<code>scheduler组件</code>可能出在问题。</p>
+<ul>
+<li><strong>如果是pending状态：pod是已经绑定到某个节点了</strong>。</li>
+</ul>
+<ul>
+<li>继续流程讲解：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">4、kubelet向apiserver查询分配到自己节点的pod，调用docker api（/var/run/docker.sock）创建容器</span><br><span class="line">5、kubelet获取docker创建容器的状态，并汇报给apiserver，apiserver更新状态到etcd存储</span><br><span class="line">6、kubectl get pods就能查看pod状态</span><br><span class="line"></span><br><span class="line">备注：</span><br><span class="line">kubelet的功能主要是管理容器：</span><br><span class="line"></span><br><span class="line">这个是默认调用的docker api接口</span><br><span class="line">[root@k8s-master ~]<span class="comment">#ll /var/run/docker.sock</span></span><br><span class="line">srw-rw---- 1 root docker 0 Jun 14 11:46 /var/run/docker.sock</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210615070717425.png" alt="image-20210615070717425"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210615070800673.png" alt="image-20210615070800673"></p>
+<ul>
+<li>问题：==controller-manager为什么没用到?==<br>controller-manager是用于管理控制器，例如deployment（rs）、service，因为创建的是一个pod，不受它管理。</li>
+</ul>
+<p>如果controller-manager要放在这里，<strong>一般是放在etcd后面的</strong>：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210615071819565.png" alt="image-20210615071819565"></p>
+<ul>
+<li>==kube-proxy为什么没用到？==<br>proxy是用于管理pod网络，例如service，因为没创建service。</li>
+</ul>
+<p><strong>kube-proxy的主要功能就是维护好service</strong>，service是k8s的抽象资源；</p>
+<ul>
+<li>扩展</li>
+</ul>
+<p>比如，这个容器创建的时候创建失败了，不是一个running状态，也不是一个pending状态。可能就是docker在启动容器时，用你那个镜像启动容器失败了。所以这是你需要用docker去run一个镜像看能不能起来。</p>
+<h4 id="3、备注"><a href="#3、备注" class="headerlink" title="3、备注"></a>3、备注</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">`发布与订阅`</span><br><span class="line">`list与watch机制`：会周期性地去问。</span><br><span class="line">开发</span><br><span class="line">消息队列</span><br><span class="line"></span><br><span class="line"><span class="comment">#k8s组件：</span></span><br><span class="line">master：apiserver、controller-manager、scheduler、（第三方组件：etcd，etcd可单独部署）</span><br><span class="line">node：kube-proxy、kubelet、（第三方组件：docker）</span><br><span class="line"></span><br><span class="line">k8s架构：是一个微服务架构；</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、Pod中影响调度的主要属性"><a href="#2、Pod中影响调度的主要属性" class="headerlink" title="2、Pod中影响调度的主要属性"></a>2、Pod中影响调度的主要属性</h3><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210615073053200.png" alt="image-20210615073053200"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: web</span><br><span class="line">  namespace: default</span><br><span class="line">spec:</span><br><span class="line">  ...</span><br><span class="line">  containers:</span><br><span class="line">  - image: lizhenliang/java-demo</span><br><span class="line">  name: java-demo</span><br><span class="line">  imagePullPolicy: Always</span><br><span class="line">  livenessProbe:</span><br><span class="line">    initialDelaySeconds: 30</span><br><span class="line">    periodSeconds: 20</span><br><span class="line">    tcpSocket:</span><br><span class="line">      port: 8080</span><br><span class="line">  resources: &#123;&#125;</span><br><span class="line">  restartPolicy: Always</span><br><span class="line">  schedulerName: default-scheduler</span><br><span class="line">  nodeName: <span class="string">&quot;&quot;</span> </span><br><span class="line">  nodeSelector: &#123;&#125;</span><br><span class="line">  affinity: &#123;&#125;</span><br><span class="line">  tolerations: []</span><br></pre></td></tr></table></figure>
+
+
+
+<p>备注：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">resources: &#123;&#125; 资源调度依据这个，挺重要的；</span><br><span class="line"></span><br><span class="line">很多大厂都会去二开<span class="string">&quot;schedulerName: default-scheduler&quot;</span>这个调度器的，会去加一些调度策略，进而完成他们的需求；</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、资源限制对Pod调度的影响"><a href="#3、资源限制对Pod调度的影响" class="headerlink" title="3、资源限制对Pod调度的影响"></a>3、资源限制对Pod调度的影响</h3><h4 id="1、理论-1"><a href="#1、理论-1" class="headerlink" title="1、理论"></a>1、理论</h4><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210615075155270.png" alt="image-20210615075155270"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">资源限制对Pod调度的影响</span><br><span class="line"></span><br><span class="line">容器资源限制：</span><br><span class="line">• resources.limits.cpu</span><br><span class="line">• resources.limits.memory</span><br><span class="line"></span><br><span class="line">容器使用的最小资源需求，作为容器调度时资源分配的依据：</span><br><span class="line">• resources.requests.cpu</span><br><span class="line">• resources.requests.memory</span><br><span class="line"></span><br><span class="line">CPU单位：可以写m也可以写浮点数，例如0.5=500m，1=1000m</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: web</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: web</span><br><span class="line">  image: nginx</span><br><span class="line">  resources:</span><br><span class="line">    requests:</span><br><span class="line">      memory: &quot;64Mi&quot;</span><br><span class="line">      cpu: &quot;250m&quot;</span><br><span class="line">    limits:</span><br><span class="line">      memory: &quot;128Mi&quot;</span><br><span class="line">      cpu: &quot;500m&quot;</span><br><span class="line"></span><br><span class="line">K8s会根据Request的值去查找有足够资源的Node来调度此Pod</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、实验"><a href="#2、实验" class="headerlink" title="2、实验"></a>2、实验</h4><h5 id="实验1-已成功测试-：resources-requests"><a href="#实验1-已成功测试-：resources-requests" class="headerlink" title="==实验1(已成功测试)：resources.requests=="></a>==实验1(已成功测试)：resources.requests==</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">容器使用的最小资源需求，作为容器调度时资源分配的依据：</span><br><span class="line">• resources.requests.cpu</span><br><span class="line">• resources.requests.memory</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="1-创建yaml并修改"><a href="#1-创建yaml并修改" class="headerlink" title="1.创建yaml并修改"></a>1.创建yaml并修改</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl run pod6 --image=nginx --dry-run=client -o yaml &gt; resources.yaml</span></span><br><span class="line">root@k8s-master ~]<span class="comment">#vim resources.yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    run: pod6</span><br><span class="line">  name: pod6</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - image: nginx</span><br><span class="line">    name: pod6</span><br><span class="line">    resources:</span><br><span class="line">      <span class="comment">#最小资源</span></span><br><span class="line">      cpu: 500m</span><br><span class="line">      memory: 512Mi</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>编辑yaml文件</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616060727744.png" alt="image-20210616060727744"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618195449810.png" alt="image-20210618195449810"></p>
+<h6 id="2-apply下yaml并查看效果"><a href="#2-apply下yaml并查看效果" class="headerlink" title="2.apply下yaml并查看效果"></a>2.apply下yaml并查看效果</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply  -f resources.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616063348641.png" alt="image-20210616063348641"></p>
+<ul>
+<li>拷贝刚才创建的那个yaml文件并修改配置</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#cp resources.yaml resources2.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim resources2.yaml</span></span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    run: resource-2</span><br><span class="line">  name: resource-2</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - image: nginx</span><br><span class="line">    name: resource-2</span><br><span class="line">    resources:</span><br><span class="line">      <span class="comment">#最小资源</span></span><br><span class="line">      requests:</span><br><span class="line">        cpu: 1500m</span><br><span class="line">        memory: 512m</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616063739088.png" alt="image-20210616063739088"></p>
+<p>resource-2也起来了：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616063948332.png" alt="image-20210616063948332"></p>
+<ul>
+<li>再次拷贝刚才创建的那个yaml文件并修改配置</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#cp resources2.yaml resources3.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim resources3.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f resources3.yaml</span></span><br><span class="line">pod/resource-3 created</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616064233338.png" alt="image-20210616064233338"></p>
+<p>查看效果：</p>
+<p>此时发现最后创建的那个pod 一直是pending状态：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616064551464.png" alt="image-20210616064551464"></p>
+<p>为什么呢？我们查看一下它的描述：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616064727484.png" alt="image-20210616064727484"></p>
+<p>==<strong>是因为node节点的cpu不足，导致pod调度失败的</strong>；==</p>
+<p>自己机器计算配置大小：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616072559721.png" alt="image-20210616072559721"></p>
+<p>查看宿主机的资源使用率情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl describe node  k8s-node1</span></span><br></pre></td></tr></table></figure>
+
+<p>可分配的：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616072242236.png" alt="image-20210616072242236"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616072411357.png" alt="image-20210616072411357"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616073215481.png" alt="image-20210616073215481"></p>
+<p>此时，node1可用cpu容量为：8%m  node2可用总量为：63%m<br><strong>而此时resource3.yaml里的pod需求为1900m，很明显以上2个node均无法满足其需求，因此和这个pod将无法被分配，一直处于pending状态</strong>。</p>
+<h6 id="3-总结"><a href="#3-总结" class="headerlink" title="3.总结"></a>3.总结</h6><p><strong>K8s会根据Request的值去查找有足够资源的Node来调度此Pod</strong>。这边看的就是这里的值。</p>
+<p><strong>默认你不配置这个requests的值，这里resuest值就是0，即这个pod可以完全使用宿主机所有的cpu 资源，各个pod可能会出现争抢cpu现象</strong>。</p>
+<h5 id="实验2-已成功测试-：resources-limits"><a href="#实验2-已成功测试-：resources-limits" class="headerlink" title="==实验2(已成功测试)：resources.limits=="></a>==实验2(已成功测试)：resources.limits==</h5><h6 id="1-创建yaml并修改-1"><a href="#1-创建yaml并修改-1" class="headerlink" title="1.创建yaml并修改"></a>1.创建yaml并修改</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#cp resources3.yaml resources4.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim resources4.yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    run: resource-4</span><br><span class="line">  name: resource-4</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - image: nginx</span><br><span class="line">    name: resource-4</span><br><span class="line">    resources:</span><br><span class="line">      <span class="comment">#最小资源</span></span><br><span class="line">      requests:</span><br><span class="line">        cpu: 500m</span><br><span class="line">        memory: 512Mi</span><br><span class="line">      <span class="comment">#最大资源，一般是requests 20%左右</span></span><br><span class="line">      limits:</span><br><span class="line">        cpu: 600m</span><br><span class="line">        memory: 612Mi</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616075320865.png" alt="image-20210616075320865"></p>
+<h6 id="2-apply下并查看"><a href="#2-apply下并查看" class="headerlink" title="2.apply下并查看"></a>2.apply下并查看</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f resources4.yaml #这个是不会用影响调度的</span></span><br><span class="line">pod/resource-4 created</span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod</span></span><br><span class="line">NAME                  READY   STATUS    RESTARTS   AGE</span><br><span class="line">pod4                  1/1     Running   0          33h</span><br><span class="line">pod6                  1/1     Running   0          81m</span><br><span class="line">resource-2            1/1     Running   0          75m</span><br><span class="line">resource-3            0/1     Pending   0          70m</span><br><span class="line">resource-4            1/1     Running   0          6s <span class="comment">#已成功启动pod</span></span><br><span class="line">web-96d5df5c8-wwc96   1/1     Running   0          41h</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>pod 的最大使用上线是可以查看的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl describe pod resource-4</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616075703778.png" alt="image-20210616075703778"></p>
+<h6 id="3-我们再次测试下：把limits对应值改大，会不会影响pod开通？-gt-不会。"><a href="#3-我们再次测试下：把limits对应值改大，会不会影响pod开通？-gt-不会。" class="headerlink" title="3.我们再次测试下：把limits对应值改大，会不会影响pod开通？=&gt;不会。"></a>3.我们再次测试下：把limits对应值改大，会不会影响pod开通？=&gt;不会。</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#cp resources4.yaml resources5.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim resources5.yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    run: resource-5</span><br><span class="line">  name: resource-5</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - image: nginx</span><br><span class="line">    name: resource-5</span><br><span class="line">    resources:</span><br><span class="line">      <span class="comment">#最小资源</span></span><br><span class="line">      requests:</span><br><span class="line">        cpu: 500m</span><br><span class="line">        memory: 512Mi</span><br><span class="line">      <span class="comment">#最大资源，一般是requests 20%左右</span></span><br><span class="line">      limits:</span><br><span class="line">        cpu: 1900m <span class="comment">#把这个改成1900m,看会不会影响它开通</span></span><br><span class="line">        memory: 612Mi</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616080001319.png" alt="image-20210616080001319"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f resources5.yaml</span></span><br><span class="line">pod/resource-5 created</span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod</span></span><br><span class="line">NAME                  READY   STATUS    RESTARTS   AGE</span><br><span class="line">pod4                  1/1     Running   0          33h</span><br><span class="line">pod6                  1/1     Running   0          88m</span><br><span class="line">resource-2            1/1     Running   0          81m</span><br><span class="line">resource-3            0/1     Pending   0          77m</span><br><span class="line">resource-4            1/1     Running   0          6m45s</span><br><span class="line">resource-5            1/1     Running   0          6s <span class="comment">#可正常</span></span><br><span class="line">web-96d5df5c8-wwc96   1/1     Running   0          41h</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>是不会受影响的，就可以正常开通。</p>
+<ul>
+<li>因此，最终yaml文件标准输出：</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617053932955.png" alt="image-20210617053932955"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#vim resources5.yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    run: resource-5</span><br><span class="line">  name: resource-5</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - image: nginx</span><br><span class="line">    name: resource-5</span><br><span class="line">    resources:</span><br><span class="line">      <span class="comment">#最小资源</span></span><br><span class="line">      requests:</span><br><span class="line">        cpu: 500m</span><br><span class="line">        memory: 512Mi</span><br><span class="line">      <span class="comment">#最大资源，一般是requests 20%左右</span></span><br><span class="line">      limits:</span><br><span class="line">        cpu: 600m</span><br><span class="line">        memory: 612Mi</span><br></pre></td></tr></table></figure>
+
+<h4 id="3、备注-1"><a href="#3、备注-1" class="headerlink" title="3、备注"></a>3、备注</h4><h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1、limits是最大可用资源，一般是requests的20%左右，不太超出太多，否则limits限制就没多少意义了;</span><br><span class="line">2、limits不能小于requests;</span><br><span class="line">3、reqeusts只是一个预留性质，不是pod配置写多少，宿主机就会占用多少资源;</span><br><span class="line">4、k8s根据request来统计每个节点预分配资源，来判断下一个pod能不能分配我这个节点;</span><br><span class="line">5、所以，我们工作中，一定要配置requests和limits，来解决资源争抢问题；</span><br></pre></td></tr></table></figure>
+
+<h5 id="QA：宿主机只有2c，这里的limits可以设置为100c，但是毫无意义，只是可以这样设置。"><a href="#QA：宿主机只有2c，这里的limits可以设置为100c，但是毫无意义，只是可以这样设置。" class="headerlink" title="QA：宿主机只有2c，这里的limits可以设置为100c，但是毫无意义，只是可以这样设置。"></a>QA：宿主机只有2c，这里的limits可以设置为100c，但是毫无意义，只是可以这样设置。</h5><p>limits是最大可用资源，一般是requests的20%左右，不太超出太多，否则limits限制就没多少意义了;</p>
+<h5 id="QA：主机cpu资源利用率满时，机器出现的现象–-gt-卡顿-。"><a href="#QA：主机cpu资源利用率满时，机器出现的现象–-gt-卡顿-。" class="headerlink" title="QA：主机cpu资源利用率满时，机器出现的现象–&gt;==卡顿==。"></a>QA：主机cpu资源利用率满时，机器出现的现象–&gt;==卡顿==。</h5><p>问题：默认情况下，宿主机和容器都没做资源限制的话，容器理论上是可以无限制获取到主机的计算资源(如cpu和内存)。如果某个容器应用特别耗cpu，当它把主机cpu耗尽时(资源利用率超高，达到98,99%以上)，问主机会出现什么现象？</p>
+<p>答：会出现卡顿现象，执行一条命令，老半天才出来，像老年痴呆一样；</p>
+<p>是因为cpu是按时间片来分配的，<strong>cpu的分配原则：为了尽可能地公平地给大家一个分配，但cpu没有特别硬性的限制</strong>；</p>
+<p>可按如下来形象记忆：<br>    docker主机：服务员<br>    容器：老人</p>
+<h5 id="Care：request这里memory单位为大写字母M"><a href="#Care：request这里memory单位为大写字母M" class="headerlink" title="Care：request这里memory单位为大写字母M"></a>Care：request这里memory单位为大写字母M</h5><ul>
+<li>刚才配置错了，这里的字母写成m了：</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616071740764.png" alt="image-20210616071740764"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210616071816780.png" alt="image-20210616071816780"></p>
+<h5 id="Care：关键是你作为运维，你要大概清楚每个服务消耗资源的情况"><a href="#Care：关键是你作为运维，你要大概清楚每个服务消耗资源的情况" class="headerlink" title="Care：关键是你作为运维，你要大概清楚每个服务消耗资源的情况"></a>Care：关键是你作为运维，你要大概清楚每个服务消耗资源的情况</h5><p>我们知道，<strong>tomcat一般是比较耗费资源的，起码需要1c以上</strong>；(java应用特别消耗cpu资源、内存资源)<br>如果你的pod里的requests配置为0.5c，而limits就配置为了0.8c，那么有可能你的容器都启动不起来；</p>
+<p><strong>不像nginx，你给它个100m，0.2c，它都能起来</strong>。</p>
+<h5 id="Care：limits不配置的话，默认和requests配置一样"><a href="#Care：limits不配置的话，默认和requests配置一样" class="headerlink" title="Care：limits不配置的话，默认和requests配置一样"></a>Care：limits不配置的话，默认和requests配置一样</h5><h5 id="Care：cpu单位的计算"><a href="#Care：cpu单位的计算" class="headerlink" title="Care：cpu单位的计算"></a>Care：cpu单位的计算</h5><p>CPU单位：可以写m也可以写浮点数，例如0.5=500m，1=1000m</p>
+<p>CPU单位：m 毫核，1核=1000m=1，2核=2000m=2，0.5核=500m=0.5，0.2核=200m=0.2</p>
+<h3 id="4、nodeSelector-amp-nodeAffinity"><a href="#4、nodeSelector-amp-nodeAffinity" class="headerlink" title="4、nodeSelector &amp; nodeAffinity"></a>4、nodeSelector &amp; nodeAffinity</h3><h4 id="1、理论-2"><a href="#1、理论-2" class="headerlink" title="1、理论"></a>1、理论</h4><h5 id="1-nodeSelector"><a href="#1-nodeSelector" class="headerlink" title="1.nodeSelector"></a>1.nodeSelector</h5><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617055253912.png" alt="image-20210617055253912"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">nodeSelector &amp; nodeAffinity</span><br><span class="line"></span><br><span class="line">nodeSelector：用于将Pod调度到匹配Label的Node上，`如果没有匹配的标签会调度失败`。</span><br><span class="line">作用： </span><br><span class="line">• 约束Pod到特定的节点运行</span><br><span class="line">• 完全匹配节点标签</span><br><span class="line"></span><br><span class="line">应用场景：</span><br><span class="line">• 专用节点：根据业务线将Node分组管理</span><br><span class="line">• 配备特殊硬件：部分Node配有SSD硬盘、GPU</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617055423475.png" alt="image-20210617055423475"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">nodeSelector &amp; nodeAffinity</span><br><span class="line"></span><br><span class="line">示例：确保Pod分配到具有SSD硬盘的节点上</span><br><span class="line"></span><br><span class="line">第一步：给节点添加标签</span><br><span class="line">格式：kubectl label nodes &lt;node-name&gt; &lt;label-key&gt;=&lt;label-value&gt; </span><br><span class="line">例如：kubectl label nodes k8s-node1 disktype=ssd </span><br><span class="line">验证：kubectl get nodes --show-labels</span><br><span class="line"></span><br><span class="line">第二步：添加nodeSelector字段到Pod配置中</span><br><span class="line"></span><br><span class="line">最后，验证：</span><br><span class="line">kubectl get pods -o wide</span><br><span class="line"></span><br><span class="line">代码部分：</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">  metadata:</span><br><span class="line">    name: pod-example</span><br><span class="line">spec:</span><br><span class="line">  nodeSelector:</span><br><span class="line">    disktype: “ssd”</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx:1.19</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-nodeAffinity"><a href="#2-nodeAffinity" class="headerlink" title="2.nodeAffinity"></a>2.nodeAffinity</h5><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617055812865.png" alt="image-20210617055812865"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">nodeSelector &amp; nodeAffinity</span><br><span class="line"></span><br><span class="line">nodeAffinity：节点亲和类似于nodeSelector，可以根据节点上的标签来约束Pod可以调度到哪些节点。</span><br><span class="line"></span><br><span class="line">相比nodeSelector： </span><br><span class="line">• 匹配有更多的逻辑组合，不只是字符串的完全相等，支持的操作符有：In、NotIn、Exists、DoesNotExist、Gt、Lt</span><br><span class="line">• 调度分为软策略和硬策略，而不是硬性要求</span><br><span class="line">• 硬（required）：必须满足</span><br><span class="line">• 软（preferred）：尝试满足，但不保证</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">name: with-node-affinity</span><br><span class="line">spec:</span><br><span class="line">affinity:</span><br><span class="line">nodeAffinity:</span><br><span class="line">requiredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">nodeSelectorTerms:</span><br><span class="line">- matchExpressions:</span><br><span class="line">- key: gpu</span><br><span class="line">operator: In</span><br><span class="line">values:</span><br><span class="line">- nvidia-tesla</span><br><span class="line">preferredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">- weight: 1</span><br><span class="line">preference:</span><br><span class="line">matchExpressions:</span><br><span class="line">- key: group</span><br><span class="line">operator: In</span><br><span class="line">values:</span><br><span class="line">- ai</span><br><span class="line">containers:</span><br><span class="line">- name: web</span><br><span class="line">image: nginx</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-给node打标签命令"><a href="#3-给node打标签命令" class="headerlink" title="3.给node打标签命令"></a>3.给node打标签命令</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">格式：kubectl label nodes &lt;node-name&gt; &lt;label-key&gt;=&lt;label-value&gt; </span><br><span class="line"></span><br><span class="line">例如：kubectl label nodes k8s-node1 disktype=ssd </span><br><span class="line"></span><br><span class="line">验证：kubectl get nodes --show-labels</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-给node去标签命令"><a href="#4-给node去标签命令" class="headerlink" title="4.给node去标签命令"></a>4.给node去标签命令</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">去掉标签：kubectl label node k8s-node1 disktype2-  <span class="comment"># 在key后面加个横杠</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2、实验-1"><a href="#2、实验-1" class="headerlink" title="2、实验"></a>2、实验</h4><h5 id="实验1-已成功测试-：确保Pod分配到具有SSD硬盘的节点上"><a href="#实验1-已成功测试-：确保Pod分配到具有SSD硬盘的节点上" class="headerlink" title="实验1(已成功测试)：确保Pod分配到具有SSD硬盘的节点上"></a>实验1(已成功测试)：确保Pod分配到具有SSD硬盘的节点上</h5><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617055423475.png" alt="image-20210617055423475"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">nodeSelector &amp; nodeAffinity</span><br><span class="line">示例：确保Pod分配到具有SSD硬盘的节点上</span><br><span class="line">第一步：给节点添加标签</span><br><span class="line">格式：kubectl label nodes &lt;node-name&gt; &lt;label-key&gt;=&lt;label-value&gt; </span><br><span class="line">例如：kubectl label nodes k8s-node1 disktype=ssd </span><br><span class="line">验证：kubectl get nodes --show-labels</span><br><span class="line"></span><br><span class="line">第二步：添加nodeSelector字段到Pod配置中</span><br><span class="line"></span><br><span class="line">最后，验证：</span><br><span class="line">kubectl get pods -o wide</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">  metadata:</span><br><span class="line">    name: pod-example</span><br><span class="line">spec:</span><br><span class="line">  nodeSelector:</span><br><span class="line">    disktype: “ssd”</span><br><span class="line">containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx:1.19</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>查看原来环境</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get node</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get node --show-labels</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617062930570.png" alt="image-20210617062930570"></p>
+<ul>
+<li>实验拓扑</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617072823030.png" alt="image-20210617072823030"></p>
+<h6 id="1-给k8s-node1节点添加标签"><a href="#1-给k8s-node1节点添加标签" class="headerlink" title="1.给k8s-node1节点添加标签"></a>1.给k8s-node1节点添加标签</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">语法：</span><br><span class="line">第一步：给节点添加标签</span><br><span class="line">格式：kubectl label nodes &lt;node-name&gt; &lt;label-key&gt;=&lt;label-value&gt; </span><br><span class="line">例如：kubectl label nodes k8s-node1 disktype=ssd </span><br><span class="line">验证：kubectl get nodes --show-labels</span><br></pre></td></tr></table></figure>
+
+
+
+<p>先给node1打一个<code>disktype=ssd</code>标签：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl label nodes k8s-node1 disktype=ssd #注意，这个操作，all操作是在mastre上进行的。</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get node --show-labels</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617063230023.png" alt="image-20210617063230023"></p>
+<p>再给node2打一个<code>cputype=gpu</code>标签：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl label nodes k8s-node2 cputype=gpu</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get node --show-labels</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617064959358.png" alt="image-20210617064959358"></p>
+<h6 id="2-在Pod配置中添加nodeSelector字段"><a href="#2-在Pod配置中添加nodeSelector字段" class="headerlink" title="2.在Pod配置中添加nodeSelector字段"></a>2.在Pod配置中添加nodeSelector字段</h6><ul>
+<li>创建一个pod并编辑</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#cp resources.yaml nodeselector.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim nodeselector.yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nodeselector</span><br><span class="line">spec:</span><br><span class="line">  nodeSelector:</span><br><span class="line">    disktype: <span class="string">&quot;ssd&quot;</span></span><br><span class="line">  containers:</span><br><span class="line">  - image: nginx</span><br><span class="line">    name: web</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617065705672.png" alt="image-20210617065705672"></p>
+<ul>
+<li>apply下并查看</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f nodeselector.yaml</span></span><br><span class="line">pod/nodeselector created</span><br><span class="line"></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod -o wide #符合预期，该pod最终被分配到了k8s-node1节点上了。</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617065831648.png" alt="image-20210617065831648"></p>
+<ul>
+<li>注意，删除当前pod</li>
+</ul>
+<p>删除前：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617065831648.png" alt="image-20210617065831648"></p>
+<p>删除操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl delete -f .</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617070231581.png" alt="image-20210617070231581"></p>
+<p>删除后：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617070323946.png" alt="image-20210617070323946"></p>
+<ul>
+<li>再次创建刚才的那个<code>nodeselector</code>：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#mv /tmp/calico.yaml .</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#mv /tmp/kubernetes-dashboard.yaml .</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f nodeselector.yaml</span></span><br><span class="line">pod/nodeselector created</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里可能看不出效果，**因为目前分配到node1和node2的几率都为50%**：</p>
+<p>我们现在做这样一个操作来再次验证下<code>nodeSelector</code>效果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#cp nodeselector.yaml nodeselector2.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim nodeselector2.yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nodeselector2</span><br><span class="line">spec:</span><br><span class="line">  nodeSelector:</span><br><span class="line">    disktype: <span class="string">&quot;ssd2&quot;</span></span><br><span class="line">  containers:</span><br><span class="line">  - image: nginx</span><br><span class="line">    name: web</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617070934003.png" alt="image-20210617070934003"></p>
+<p>apply一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f nodeselector2.yaml</span></span><br><span class="line">pod/nodeselector2 created</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看：==可以看到这个pod无法启动，一直处于这个pending状态；==</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617071044632.png" alt="image-20210617071044632"></p>
+<p>查看pod提示：<code>kubectl describe pod nodeselector2</code>  调度失败。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617071253744.png" alt="image-20210617071253744"></p>
+<p>为什么会出现这个现象呢？</p>
+<p>=&gt;nodeSelector：用于将Pod调度到匹配Label的Node上，<code>如果没有匹配的标签会调度失败</code>。</p>
+<p>到此，实验完成。</p>
+<h5 id="实验2-已成功测试-：测试nodeAffinity"><a href="#实验2-已成功测试-：测试nodeAffinity" class="headerlink" title="实验2(已成功测试)：测试nodeAffinity"></a>实验2(已成功测试)：测试nodeAffinity</h5><h6 id="1-硬（required）：必须满足"><a href="#1-硬（required）：必须满足" class="headerlink" title="1.硬（required）：必须满足"></a>1.硬（required）：必须满足</h6><ul>
+<li>拷贝官网代码案例并编写yaml文件</li>
+</ul>
+<p>官方代码案例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">spec:</span><br><span class="line">  affinity:</span><br><span class="line">    nodeAffinity:</span><br><span class="line">      requiredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">        nodeSelectorTerms:</span><br><span class="line">        - matchExpressions:</span><br><span class="line">          - key: disktype</span><br><span class="line">            operator: In</span><br><span class="line">            values:</span><br><span class="line">            - ssd            </span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx</span><br><span class="line">    imagePullPolicy: IfNotPresent</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>编辑完成的yaml文件：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#vim nodeaffinity.yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nodeaffinity-pod</span><br><span class="line">spec:</span><br><span class="line">  affinity:</span><br><span class="line">    nodeAffinity:</span><br><span class="line">      requiredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">        nodeSelectorTerms:</span><br><span class="line">        - matchExpressions:</span><br><span class="line">          - key: cputype</span><br><span class="line">            operator: In <span class="comment">#这里的操作符，我们一般只用到in就足够了；</span></span><br><span class="line">            values:</span><br><span class="line">            - gpu</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx</span><br><span class="line">    imagePullPolicy: IfNotPresent</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617073105172-1623886266153.png" alt="image-20210617073105172"></p>
+<ul>
+<li>apply下并查看效果：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f nodeaffinity.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617073223848.png" alt="image-20210617073223848"></p>
+<p>查看可发现，该nodeaffinity-pod被分配到了node2节点上，符合预期效果：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617073403708.png" alt="image-20210617073403708"></p>
+<h6 id="2-软（preferred）：尝试满足，但不保证"><a href="#2-软（preferred）：尝试满足，但不保证" class="headerlink" title="2.软（preferred）：尝试满足，但不保证"></a>2.软（preferred）：尝试满足，但不保证</h6><ul>
+<li>官方赋值yaml代码并编辑</li>
+</ul>
+<p>官方代码案例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">spec:</span><br><span class="line">  affinity:</span><br><span class="line">    nodeAffinity:</span><br><span class="line">      preferredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">      - weight: 1</span><br><span class="line">        preference:</span><br><span class="line">          matchExpressions:</span><br><span class="line">          - key: disktype</span><br><span class="line">            operator: In</span><br><span class="line">            values:</span><br><span class="line">            - ssd          </span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx</span><br><span class="line">    imagePullPolicy: IfNotPresent</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>自己编写最终的代码如下</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#cp nodeaffinity.yaml nodeaffinity2.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim nodeaffinity2.yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nodeaffinity-pod2</span><br><span class="line">spec:</span><br><span class="line">  affinity:</span><br><span class="line">    nodeAffinity:</span><br><span class="line">      preferredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">      - weight: 1</span><br><span class="line">        preference:</span><br><span class="line">          matchExpressions:</span><br><span class="line">          - key: disktype</span><br><span class="line">            operator: In</span><br><span class="line">            values:</span><br><span class="line">            - ssd2</span><br><span class="line"></span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx</span><br><span class="line">    imagePullPolicy: IfNotPresent</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617074724132.png" alt="image-20210617074724132"></p>
+<ul>
+<li>apply并观察效果：因为做的是软策略，因此这个pod是可以被创建的。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#vim nodeaffinity2.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod -o wide</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617074604305.png" alt="image-20210617074604305"></p>
+<h5 id="实验3-已成功测试-：好问题：因pod中nodeSelector里的标签未出现在all-node节点，但后续给node打好符合要求的标签，原来处于pending状态的pod会自动迁移过去的吗？–-gt-会的。"><a href="#实验3-已成功测试-：好问题：因pod中nodeSelector里的标签未出现在all-node节点，但后续给node打好符合要求的标签，原来处于pending状态的pod会自动迁移过去的吗？–-gt-会的。" class="headerlink" title="实验3(已成功测试)：好问题：因pod中nodeSelector里的标签未出现在all node节点，但后续给node打好符合要求的标签，原来处于pending状态的pod会自动迁移过去的吗？–&gt;会的。"></a>实验3(已成功测试)：好问题：因pod中nodeSelector里的标签未出现在all node节点，但后续给node打好符合要求的标签，原来处于pending状态的pod会自动迁移过去的吗？–&gt;<code>会的</code>。</h5><ul>
+<li>问题</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617201823351.png" alt="image-20210617201823351"></p>
+<ul>
+<li>给k8s-node1打上标签<code>disktype=ssd</code></li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617203154447.png" alt="image-20210617203154447"></p>
+<ul>
+<li>新建nodeselector2.yaml</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#vim nodeselector2.yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nodeselector2</span><br><span class="line">spec:</span><br><span class="line">  nodeSelector:</span><br><span class="line">    disktype2: <span class="string">&quot;ssd2&quot;</span></span><br><span class="line">  containers:</span><br><span class="line">  - image: nginx</span><br><span class="line">    name: web</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>此时apply一下nodeselector2.yaml，会发现这个pod处于pending状态</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617203420360.png" alt="image-20210617203420360"></p>
+<ul>
+<li>此时，再给node1打上标签<code>disktype2=ssd2</code>，并观察原来处于pending的pod是否会迁移过去？</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl label nodes k8s-node1 disktype2=ssd2</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get node --show-labels</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617203623851.png" alt="image-20210617203623851"></p>
+<ul>
+<li>观察现象：原来处于pending的pod会迁移到刚才打好标签的node上去的。</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617203905070.png" alt="image-20210617203905070"></p>
+<ul>
+<li>思考：没有重启，为何要被重新调度？–&gt;<code>listwatch</code> 监听。</li>
+</ul>
+<h4 id="3、备注-2"><a href="#3、备注-2" class="headerlink" title="3、备注"></a>3、备注</h4><h5 id="Care：这个kubectl-label可以给任意资源打标签，例如之前提到的pod-deployment；"><a href="#Care：这个kubectl-label可以给任意资源打标签，例如之前提到的pod-deployment；" class="headerlink" title="Care：这个kubectl label可以给任意资源打标签，例如之前提到的pod,deployment；"></a>Care：这个kubectl label可以给任意资源打标签，例如之前提到的pod,deployment；</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">格式：kubectl label nodes &lt;node-name&gt; &lt;label-key&gt;=&lt;label-value&gt; </span><br><span class="line"></span><br><span class="line">我们要查看资源的标签，我们要加什么值？--show-labels</span><br></pre></td></tr></table></figure>
+
+<h5 id="Care：简单来讲，nodeSelector就够用了。"><a href="#Care：简单来讲，nodeSelector就够用了。" class="headerlink" title="Care：简单来讲，nodeSelector就够用了。"></a>Care：简单来讲，nodeSelector就够用了。</h5><h5 id="Care：nodeSelector中的key不能一样的。-即不能修改原有标签的值-value"><a href="#Care：nodeSelector中的key不能一样的。-即不能修改原有标签的值-value" class="headerlink" title="Care：nodeSelector中的key不能一样的。==即不能修改原有标签的值(value)"></a>Care：nodeSelector中的key不能一样的。==即不能修改原有标签的值(value)</h5><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617205146840.png" alt="image-20210617205146840"></p>
+<h3 id="5、Taint（污点）与Tolerations（污点容忍）"><a href="#5、Taint（污点）与Tolerations（污点容忍）" class="headerlink" title="5、Taint（污点）与Tolerations（污点容忍）"></a>5、Taint（污点）与Tolerations（污点容忍）</h3><h4 id="1-理论"><a href="#1-理论" class="headerlink" title="1.理论"></a>1.理论</h4><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617205453064.png" alt="image-20210617205453064"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Taint（污点）与Tolerations（污点容忍）</span><br><span class="line"></span><br><span class="line">Taints：避免Pod调度到特定Node上 </span><br><span class="line">Tolerations：允许Pod调度到持有Taints的Node上</span><br><span class="line"></span><br><span class="line">应用场景： </span><br><span class="line">• 专用节点：根据业务线将Node分组管理，希望在默认情况下不调度该节点，只有配置了污点容忍才允许分配</span><br><span class="line">• 配备特殊硬件：部分Node配有SSD硬盘、GPU，希望在默认情况下不调度该节点，只有配置了污点容忍才允许分配</span><br><span class="line">• 基于Taint的驱逐</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617210540409.png" alt="image-20210617210540409"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Taint（污点）与Tolerations（污点容忍）</span><br><span class="line"></span><br><span class="line">第一步：给节点添加污点</span><br><span class="line">格式：kubectl taint node [node] key=value:[effect] </span><br><span class="line">例如：kubectl taint node k8s-node1 gpu=yes:NoSchedule</span><br><span class="line">验证：kubectl describe node k8s-node1 |grep Taint </span><br><span class="line"></span><br><span class="line">其中[effect] 可取值：</span><br><span class="line">• NoSchedule ：一定不能被调度--&gt;`一般情况下只用第一种`</span><br><span class="line">• PreferNoSchedule：尽量不要调度，非必须配置容忍</span><br><span class="line">• NoExecute：不仅不会调度，还会驱逐Node上已有的Pod</span><br><span class="line"></span><br><span class="line">第二步：如果希望Pod可以被分配到带有污点的节点上，要在Pod配置</span><br><span class="line">中添加污点容忍（tolrations）字段</span><br><span class="line"></span><br><span class="line">去掉污点命令：</span><br><span class="line">kubectl taint node [node] key:[effect]-</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: pod-taints</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: pod-taints</span><br><span class="line">    image: busybox:latest</span><br><span class="line">  tolerations: </span><br><span class="line">  - key: <span class="string">&quot;gpu&quot;</span></span><br><span class="line">    operator: <span class="string">&quot;Equal&quot;</span></span><br><span class="line">    value: <span class="string">&quot;yes&quot;</span></span><br><span class="line">    effect: <span class="string">&quot;NoSchedule&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-实验"><a href="#2-实验" class="headerlink" title="2.实验"></a>2.实验</h4><h5 id="实验1-已成功测试-：Taint（污点）与Tolerations（污点容忍）实验"><a href="#实验1-已成功测试-：Taint（污点）与Tolerations（污点容忍）实验" class="headerlink" title="实验1(已成功测试)：Taint（污点）与Tolerations（污点容忍）实验"></a>实验1(已成功测试)：Taint（污点）与Tolerations（污点容忍）实验</h5><h6 id="参考方法"><a href="#参考方法" class="headerlink" title="参考方法"></a>参考方法</h6><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617210540409.png" alt="image-20210617210540409"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Taint（污点）与Tolerations（污点容忍）</span><br><span class="line"></span><br><span class="line">第一步：给节点添加污点</span><br><span class="line">格式：kubectl taint node [node] key=value:[effect] </span><br><span class="line">例如：kubectl taint node k8s-node1 gpu=yes:NoSchedule</span><br><span class="line">验证：kubectl describe node k8s-node1 |grep Taint </span><br><span class="line"></span><br><span class="line">其中[effect] 可取值：</span><br><span class="line">• NoSchedule ：一定不能被调度</span><br><span class="line">• PreferNoSchedule：尽量不要调度，非必须配置容忍</span><br><span class="line">• NoExecute：不仅不会调度，还会驱逐Node上已有的Pod</span><br><span class="line"></span><br><span class="line">第二步：如果希望Pod可以被分配到带有污点的节点上，要在Pod配置</span><br><span class="line">中添加污点容忍（tolrations）字段</span><br><span class="line"></span><br><span class="line">去掉污点：</span><br><span class="line">kubectl taint node [node] key:[effect]-</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">name: pod-taints</span><br><span class="line">spec:</span><br><span class="line">containers:</span><br><span class="line">- name: pod-taints</span><br><span class="line">image: busybox:latest</span><br><span class="line">tolerations: - key: <span class="string">&quot;gpu&quot;</span></span><br><span class="line">operator: <span class="string">&quot;Equal&quot;</span></span><br><span class="line">value: <span class="string">&quot;yes&quot;</span></span><br><span class="line">effect: <span class="string">&quot;NoSchedule&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="1-给k8s-node1打上污点"><a href="#1-给k8s-node1打上污点" class="headerlink" title="1.给k8s-node1打上污点"></a>1.给k8s-node1打上污点</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#给节点添加污点</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl taint node k8s-node1 ssd=ok:NoSchedule</span></span><br><span class="line">node/k8s-node1 tainted</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看节点是否打好污点：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl describe nodes k8s-node1 |grep Taint</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617213757624.png" alt="image-20210617213757624"></p>
+<h6 id="2-直接使用deployment开通6个pod用于测试节点打上Taint效果"><a href="#2-直接使用deployment开通6个pod用于测试节点打上Taint效果" class="headerlink" title="2.直接使用deployment开通6个pod用于测试节点打上Taint效果"></a>2.直接使用deployment开通6个pod用于测试<code>节点打上Taint</code>效果</h6><p>这里直接使用deployment来开通6个pod,来测试效果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl create deployment web --image=nginx --replicas=6</span></span><br><span class="line">deployment.apps/web created</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看效果：–&gt;==完全不会分配到k8s-node1节点上，因为上面打了污点==。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617215013736.png" alt="image-20210617215013736"></p>
+<h6 id="3-如果希望Pod可以被分配到带有污点的节点上，要在Pod配置中添加污点容忍（tolrations）字段"><a href="#3-如果希望Pod可以被分配到带有污点的节点上，要在Pod配置中添加污点容忍（tolrations）字段" class="headerlink" title="3.如果希望Pod可以被分配到带有污点的节点上，要在Pod配置中添加污点容忍（tolrations）字段"></a>3.如果希望Pod可以被分配到带有污点的节点上，要在Pod配置中添加污点容忍（tolrations）字段</h6><p>此时，删除刚才创建的pod：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl delete deploy web</span></span><br><span class="line">deployment.apps <span class="string">&quot;web&quot;</span> deleted</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>把刚才的这个yaml直接导出来进行使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl create deployment web --image=nginx --replicas=6 --dry-run=client -o yaml &gt; tolerations.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim tolerations.yaml</span></span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    app: web</span><br><span class="line">  name: web</span><br><span class="line">spec:</span><br><span class="line">  replicas: 6</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: web</span><br><span class="line">  strategy: &#123;&#125;</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: web</span><br><span class="line">    spec:</span><br><span class="line">      tolerations:</span><br><span class="line">      - key: <span class="string">&quot;ssd&quot;</span></span><br><span class="line">        operator: <span class="string">&quot;Equal&quot;</span></span><br><span class="line">        value: <span class="string">&quot;ok&quot;</span></span><br><span class="line">        effect: <span class="string">&quot;NoSchedule&quot;</span></span><br><span class="line">      containers:</span><br><span class="line">      - image: nginx</span><br><span class="line">        name: nginx</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617232644943.png" alt="image-20210617232644943"></p>
+<p>apply下，查看效果：–&gt;<strong>此时，在配置了污点容忍后，就可以被分配到原来打了污点的节点上了。</strong></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210617233130848.png" alt="image-20210617233130848"></p>
+<h6 id="4-maser节点污点实验"><a href="#4-maser节点污点实验" class="headerlink" title="4.maser节点污点实验"></a>4.maser节点污点实验</h6><ul>
+<li>问题：master节点上，为什么除了静态pod之外，上面还有calico/kube-proxy组件可以运行。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod -n kube-system -o wide |grep master</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#master节点存在的pod                        </span></span><br><span class="line">kube-apiserver-k8s-master                  </span><br><span class="line">kube-controller-manager-k8s-master  </span><br><span class="line">kube-scheduler-k8s-master</span><br><span class="line">etcd-k8s-master  </span><br><span class="line"></span><br><span class="line">kube-proxy-p9bd4   </span><br><span class="line">calico-node-l7q5q  </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618052555393.png" alt="image-20210618052555393"></p>
+<ul>
+<li>是因为，calico默认已经添加了<code>污点容忍</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#vim calico.yaml</span></span><br><span class="line">      tolerations:</span><br><span class="line">        <span class="comment"># Make sure calico-node gets scheduled on all nodes.</span></span><br><span class="line">        - effect: NoSchedule</span><br><span class="line">          operator: Exists</span><br><span class="line">        <span class="comment"># Mark the pod as a critical add-on for rescheduling.</span></span><br><span class="line">        - key: CriticalAddonsOnly</span><br><span class="line">          operator: Exists</span><br><span class="line">        - effect: NoExecute</span><br><span class="line">          operator: Exists</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看节点污点情况</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl describe nodes  |grep Taint</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl describe nodes k8s-master |grep Taint</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618053242156.png" alt="image-20210618053242156"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618053354852.png" alt="image-20210618053354852"></p>
+<ul>
+<li>注意：==刚才那个是一个精确的写法。==</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#给节点添加污点</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl taint node k8s-node1 ssd=ok:NoSchedule</span></span><br><span class="line">node/k8s-node1 tainted</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618053826948.png" alt="image-20210618053826948"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618054002194.png" alt="image-20210618054002194"></p>
+<ul>
+<li>删除tolerations.yaml并修改yaml，看再次运行是否有几率会分配在master节点上？</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl delete -f tolerations.yaml</span></span><br><span class="line">deployment.apps <span class="string">&quot;web&quot;</span> deleted</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br><span class="line"></span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim tolerations.yaml</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618054513318.png" alt="image-20210618054513318"></p>
+<p>原来这个pod里面只配置了允许分布在node1节点上，现在配置下可以使其分布在master节点上：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#vim tolerations.yaml</span></span><br><span class="line">    spec:</span><br><span class="line">      tolerations:</span><br><span class="line">      - key: <span class="string">&quot;ssd&quot;</span></span><br><span class="line">        operator: <span class="string">&quot;Equal&quot;</span></span><br><span class="line">        value: <span class="string">&quot;ok&quot;</span></span><br><span class="line">        effect: <span class="string">&quot;NoSchedule&quot;</span></span><br><span class="line">      - effect: NoSchedule</span><br><span class="line">        operator: Exists</span><br><span class="line"></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f tolerations.yaml</span></span><br><span class="line">deployment.apps/web created</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>查看发现：新开通的pod会被分配到master节点上去了。</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618060743938.png" alt="image-20210618060743938"></p>
+<p>为什么呢？原因在这里：==污点容忍是可以直接放宽条件写的，例如calico，不分什么key什么value，符合带有污点是NoSchedule都可以允许分配。==</p>
+<h4 id="3-备注"><a href="#3-备注" class="headerlink" title="3.备注"></a>3.备注</h4><h5 id="Care：污点发生在node，污点容忍发生在pod；"><a href="#Care：污点发生在node，污点容忍发生在pod；" class="headerlink" title="Care：污点发生在node，污点容忍发生在pod；"></a>Care：污点发生在node，污点容忍发生在pod；</h5><h5 id="Care：nodeSelector-nodeAffinity与Taint-Tolerations区别"><a href="#Care：nodeSelector-nodeAffinity与Taint-Tolerations区别" class="headerlink" title="Care：nodeSelector/nodeAffinity与Taint/Tolerations区别"></a>Care：nodeSelector/nodeAffinity与Taint/Tolerations区别</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nodeSelector/nodeAffinity--一种主观意识，我要分配在哪个node节点上去；</span><br><span class="line">而Taint/Tolerations：是一种排斥行为，在node上排斥pod分配到自己身上；</span><br><span class="line"></span><br><span class="line">nodeSelector/nodeAffinity--管理员强迫node</span><br><span class="line">taint/toleration--node主动的一脸嫌弃</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="6、nodeName"><a href="#6、nodeName" class="headerlink" title="6、nodeName"></a>6、nodeName</h3><h4 id="1-理论-1"><a href="#1-理论-1" class="headerlink" title="1.理论"></a>1.理论</h4><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618061517334.png" alt="image-20210618061517334"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">nodeName</span><br><span class="line"></span><br><span class="line">nodeName：指定节点名称，用于将Pod调度到指定的Node上，不经过调度器</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: pod-example</span><br><span class="line">  labels:</span><br><span class="line">    app: nginx</span><br><span class="line">spec:</span><br><span class="line">  nodeName: k8s-node2</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx:1.15</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-实验-1"><a href="#2-实验-1" class="headerlink" title="2.实验"></a>2.实验</h4><ul>
+<li>创建pod的yaml并修改</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl run pod6 --image=nginx --dry-run=client -o yaml &gt; pod6.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim pod6.yaml</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>注意：原来k8s-node1节点是已经打好污点了的。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl describe nodes |grep Taint</span></span><br><span class="line">Taints:             node-role.kubernetes.io/master:NoSchedule</span><br><span class="line">Taints:             ssd=ok:NoSchedule</span><br><span class="line">Taints:             &lt;none&gt;</span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl describe nodes k8s-node1 |grep Taint</span></span><br><span class="line">Taints:             ssd=ok:NoSchedule</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>apply并查看效果</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f pod6.yaml</span></span><br><span class="line">pod/pod6 created</span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod -o wide</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618062414511.png" alt="image-20210618062414511"></p>
+<ul>
+<li>结论</li>
+</ul>
+<p>==如果在pod里指定了<code>nodeName</code>字段，那么即使该pod没有配置<code>污点容忍</code>，也会被强制开通的指定的节点上去的。==</p>
+<h4 id="3-备注-1"><a href="#3-备注-1" class="headerlink" title="3.备注"></a>3.备注</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nodeName指哪打哪；</span><br><span class="line"></span><br><span class="line">`nodeName`一般在测试中用，但工作中根本没怎么用到；</span><br></pre></td></tr></table></figure>
+
+<h3 id="7、DaemonSet"><a href="#7、DaemonSet" class="headerlink" title="7、DaemonSet"></a>7、DaemonSet</h3><h4 id="1-理论-2"><a href="#1-理论-2" class="headerlink" title="1.理论"></a>1.理论</h4><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618064908744.png" alt="image-20210618064908744"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">DaemonSet</span><br><span class="line"></span><br><span class="line">DaemonSet功能：</span><br><span class="line">• 在每一个Node上运行一个Pod</span><br><span class="line">• 新加入的Node也同样会自动运行一个Pod</span><br><span class="line">应用场景：网络插件、监控Agent、日志Agent</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618070301017.png" alt="image-20210618070301017"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">DaemonSet</span><br><span class="line"></span><br><span class="line">示例：部署一个日志采集程序</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: DaemonSet</span><br><span class="line">metadata:</span><br><span class="line">  name: filebeat</span><br><span class="line">  namespace: kube-system</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      name: filebeat</span><br><span class="line">template:</span><br><span class="line">  metadata:</span><br><span class="line">    labels:</span><br><span class="line">      name: filebeat</span><br><span class="line">  spec:</span><br><span class="line">    containers:</span><br><span class="line">    - name: <span class="built_in">log</span></span><br><span class="line">      image: elastic/filebeat:7.3.2</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-实验-2"><a href="#2-实验-2" class="headerlink" title="2.实验"></a>2.实验</h4><h5 id="实验1-已测试成功-：查看DaemonSet控制器开通的kube-proxy-calico组件"><a href="#实验1-已测试成功-：查看DaemonSet控制器开通的kube-proxy-calico组件" class="headerlink" title="实验1(已测试成功)：查看DaemonSet控制器开通的kube-proxy,calico组件"></a>实验1(已测试成功)：查看<code>DaemonSet</code>控制器开通的kube-proxy,calico组件</h5><ul>
+<li>calico和kube-proxy组件都是由<code>DaemonSet控制器</code>启动的</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod -A</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618065442213.png" alt="image-20210618065442213"></p>
+<ul>
+<li>查看calico组件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#vim calico.yaml</span></span><br><span class="line"><span class="comment">#DaemonSet配置和deployment基本一样，只不过它没有配置`副本数`以及`滚动更新`字段，因为它在每一个节点上都跑了一个pod。即保证了ha。</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618065813415.png" alt="image-20210618065813415"></p>
+<h5 id="实验2-已成功测试-：验证DaemonSet是否受污点的的影响？"><a href="#实验2-已成功测试-：验证DaemonSet是否受污点的的影响？" class="headerlink" title="实验2(已成功测试)：验证DaemonSet是否受污点的的影响？"></a>实验2(已成功测试)：验证DaemonSet是否受污点的的影响？</h5><h6 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h6><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618070301017.png" alt="image-20210618070301017"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">DaemonSet</span><br><span class="line"></span><br><span class="line">示例：部署一个日志采集程序</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: DaemonSet</span><br><span class="line">metadata:</span><br><span class="line">  name: filebeat</span><br><span class="line">  namespace: kube-system</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      name: filebeat</span><br><span class="line">template:</span><br><span class="line">  metadata:</span><br><span class="line">    labels:</span><br><span class="line">      name: filebeat</span><br><span class="line">  spec:</span><br><span class="line">    containers:</span><br><span class="line">    - name: <span class="built_in">log</span></span><br><span class="line">      image: elastic/filebeat:7.3.2</span><br></pre></td></tr></table></figure>
+
+<h6 id="1-创建yaml并修改-2"><a href="#1-创建yaml并修改-2" class="headerlink" title="1.创建yaml并修改"></a>1.创建yaml并修改</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl create deployment web --image=nginx --dry-run=client -o yaml &gt; daemonset.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim daemonset.yaml</span></span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: DaemonSet</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    app: web</span><br><span class="line">  name: daemonset-log</span><br><span class="line">spec:</span><br><span class="line">  <span class="comment">#replicas: 1</span></span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: web</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: web</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - image: nginx</span><br><span class="line">        name: nginx</span><br><span class="line">        resources: &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618071714346.png" alt="image-20210618071714346"></p>
+<h6 id="2-apply下yaml"><a href="#2-apply下yaml" class="headerlink" title="2.apply下yaml"></a>2.apply下yaml</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f daemonset.yaml</span></span><br><span class="line">daemonset.apps/daemonset-log created</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="3-查看效果"><a href="#3-查看效果" class="headerlink" title="3.查看效果"></a>3.查看效果</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod -o wide</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618071947153.png" alt="image-20210618071947153"></p>
+<p>按理说，DaemonSet控制器创建的pod会被部署到每个节点上啊，但这里只出现在了node2节点上了，为什么呢？–&gt;这是因为node1节点被打了污点了。<br>因此，得出结论：==DaemonSet是受污点的的影响的。==</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl describe nodes |grep Taints</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get nodes --show-labels</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618072315405.png" alt="image-20210618072315405"></p>
+<h6 id="4-验证：此时，删除node1节点的污点后，看是否会在此节点上拉起一个pod？"><a href="#4-验证：此时，删除node1节点的污点后，看是否会在此节点上拉起一个pod？" class="headerlink" title="4.验证：此时，删除node1节点的污点后，看是否会在此节点上拉起一个pod？"></a>4.验证：此时，删除node1节点的污点后，看是否会在此节点上拉起一个pod？</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl taint node k8s-node1 ssd:NoSchedule- #去除污点</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod -o wide</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618072807881.png" alt="image-20210618072807881"></p>
+<p>因此，得出结论：==删除node1节点的污点后，是会在此节点上拉起一个pod的，是没有任何问题的。==</p>
+<h6 id="5-验证：在刚才的pod里面配置匹配master节点污点容忍后，看是否也会在mster节点拉起一个pod"><a href="#5-验证：在刚才的pod里面配置匹配master节点污点容忍后，看是否也会在mster节点拉起一个pod" class="headerlink" title="5.验证：在刚才的pod里面配置匹配master节点污点容忍后，看是否也会在mster节点拉起一个pod?"></a>5.验证：在刚才的pod里面配置匹配master节点<code>污点容忍</code>后，看是否也会在mster节点拉起一个pod?</h6><ul>
+<li>编写yaml</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#vim daemonset.yaml</span></span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: DaemonSet</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    app: web</span><br><span class="line">  name: daemonset-log</span><br><span class="line">spec:</span><br><span class="line">  <span class="comment">#replicas: 1</span></span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: web</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: web</span><br><span class="line">    spec:</span><br><span class="line">      tolerations:</span><br><span class="line">        - effect: NoSchedule</span><br><span class="line">          operator: Exists</span><br><span class="line">      containers:</span><br><span class="line">      - image: nginx</span><br><span class="line">        name: nginx</span><br><span class="line">        resources: &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618074122125.png" alt="image-20210618074122125"></p>
+<ul>
+<li>apply并查看效果</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618074036156.png" alt="image-20210618074036156"></p>
+<ul>
+<li>结论：</li>
+</ul>
+<p>==在刚才的pod里面配置匹配master节点<code>污点容忍</code>后，也会在mster节点拉起一个pod的，这符合DaemonSet和污点容忍的策略。==</p>
+<h4 id="3-备注-2"><a href="#3-备注-2" class="headerlink" title="3.备注"></a>3.备注</h4><h5 id="Care：常见的3种控制器"><a href="#Care：常见的3种控制器" class="headerlink" title="Care：常见的3种控制器"></a>Care：常见的3种控制器</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">deployment  运行无状态应用</span><br><span class="line">daemonset   在每个节点运行一个pod，例如calico、kube-proxy</span><br><span class="line">statefulset 运行有状态应用</span><br></pre></td></tr></table></figure>
+
+<h3 id="8、调度原因失败分析"><a href="#8、调度原因失败分析" class="headerlink" title="8、调度原因失败分析"></a>8、调度原因失败分析</h3><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618074450501.png" alt="image-20210618074450501"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">调度失败原因分析</span><br><span class="line"></span><br><span class="line">查看调度结果：</span><br><span class="line">kubectl get pod &lt;NAME&gt; -o wide</span><br><span class="line"></span><br><span class="line">查看调度失败原因：kubectl describe pod &lt;NAME&gt;</span><br><span class="line">• 节点CPU/内存不足</span><br><span class="line">• 有污点，没容忍</span><br><span class="line">• 没有匹配到节点标签</span><br></pre></td></tr></table></figure>
+
+<h3 id="课堂作业-20210618已提交作业"><a href="#课堂作业-20210618已提交作业" class="headerlink" title="课堂作业-20210618已提交作业"></a>课堂作业-20210618已提交作业</h3><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618074529770.png" alt="image-20210618074529770"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">课后作业</span><br><span class="line">1、创建一个pod，分配到指定标签node上 </span><br><span class="line">• pod名称：web</span><br><span class="line">• 镜像：nginx</span><br><span class="line">• node标签：disk=ssd</span><br><span class="line"></span><br><span class="line">2、确保在每个节点上运行一个pod</span><br><span class="line">• pod名称：nginx</span><br><span class="line">• 镜像：nginx</span><br><span class="line"></span><br><span class="line">3、查看集群中状态为ready的node数量，并将结果写到指定文件</span><br></pre></td></tr></table></figure>
+
+<h4 id="作业1-已完成-创建一个pod，分配到指定标签node上"><a href="#作业1-已完成-创建一个pod，分配到指定标签node上" class="headerlink" title="作业1(已完成) 创建一个pod，分配到指定标签node上"></a>作业1(已完成) 创建一个pod，分配到指定标签node上</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">作业：</span><br><span class="line">1、创建一个pod，分配到指定标签node上 </span><br><span class="line">• pod名称：web</span><br><span class="line">• 镜像：nginx</span><br><span class="line">• node标签：disk=ssd</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-先给node打标签"><a href="#1-先给node打标签" class="headerlink" title="1.先给node打标签"></a>1.先给node打标签</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl label nodes k8s-node1 disk=ssd</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get nodes --show-labels</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618153042260.png" alt="image-20210618153042260"></p>
+<h5 id="2-再创建yaml并配置nodeSelector"><a href="#2-再创建yaml并配置nodeSelector" class="headerlink" title="2.再创建yaml并配置nodeSelector"></a>2.再创建yaml并配置nodeSelector</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl create deployment web --image=nginx --dry-run=client -o yaml &gt; pod-nodeselector.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim pod-nodeselector.yaml</span></span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    app: web</span><br><span class="line">  name: web</span><br><span class="line">spec:</span><br><span class="line">  replicas: 1</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: web</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: web</span><br><span class="line">    spec:</span><br><span class="line">      nodeSelector:</span><br><span class="line">        disk: <span class="string">&quot;ssd&quot;</span></span><br><span class="line">      containers:</span><br><span class="line">      - image: nginx</span><br><span class="line">        name: nginx</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618160103653.png" alt="image-20210618160103653"></p>
+<h5 id="3-apply并查看效果"><a href="#3-apply并查看效果" class="headerlink" title="3.apply并查看效果"></a>3.apply并查看效果</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f pod-nodeselector.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod -o wide</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618160132944.png" alt="image-20210618160132944"></p>
+<p>刚创建的pod被分配到了k8s-node1节点上了，满足实验需求。</p>
+<p>实验到此结束。</p>
+<h5 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h5><p>本作业考察了<code>nodeSelector</code>知识点的使用。</p>
+<h4 id="作业2-已完成-确保在每个节点上运行一个pod"><a href="#作业2-已完成-确保在每个节点上运行一个pod" class="headerlink" title="作业2(已完成)  确保在每个节点上运行一个pod"></a>作业2(已完成)  确保在每个节点上运行一个pod</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">作业：</span><br><span class="line">2、确保在每个节点上运行一个pod</span><br><span class="line">• pod名称：nginx</span><br><span class="line">• 镜像：nginx</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-创建yaml并修改-3"><a href="#1-创建yaml并修改-3" class="headerlink" title="1.创建yaml并修改"></a>1.创建yaml并修改</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl create deployment nginx --image=nginx --dry-run=client -o yaml &gt; homework-daemonset.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim homework-daemonset.yaml</span></span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: DaemonSet</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    app: nginx</span><br><span class="line">  name: nginx</span><br><span class="line">spec:</span><br><span class="line">  <span class="comment">#replicas: 1</span></span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: nginx</span><br><span class="line">  <span class="comment">#strategy: &#123;&#125;</span></span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: nginx</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - image: nginx</span><br><span class="line">        name: nginx</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618161441417.png" alt="image-20210618161441417"></p>
+<h5 id="2-apply下并查看-1"><a href="#2-apply下并查看-1" class="headerlink" title="2.apply下并查看"></a>2.apply下并查看</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f homework-daemonset.yaml</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pod -o wide</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618161340182.png" alt="image-20210618161340182"></p>
+<h5 id="3-总结-1"><a href="#3-总结-1" class="headerlink" title="3.总结"></a>3.总结</h5><p>次作业考察了<code>DaemonSet</code>的知识点。</p>
+<h4 id="作业3-已完成-查看集群中状态为ready的node数量，并将结果写到指定文件"><a href="#作业3-已完成-查看集群中状态为ready的node数量，并将结果写到指定文件" class="headerlink" title="作业3(已完成)  查看集群中状态为ready的node数量，并将结果写到指定文件"></a>作业3(已完成)  查看集群中状态为ready的node数量，并将结果写到指定文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3、查看集群中状态为ready的node数量，并将结果写到指定文件</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get node</span></span><br><span class="line">NAME         STATUS   ROLES                  AGE   VERSION</span><br><span class="line">k8s-master   Ready    control-plane,master   16d   v1.20.0</span><br><span class="line">k8s-node1    Ready    &lt;none&gt;                 16d   v1.20.0</span><br><span class="line">k8s-node2    Ready    &lt;none&gt;                 16d   v1.20.0</span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get node |grep Ready</span></span><br><span class="line">k8s-master   Ready    control-plane,master   16d   v1.20.0</span><br><span class="line">k8s-node1    Ready    &lt;none&gt;                 16d   v1.20.0</span><br><span class="line">k8s-node2    Ready    &lt;none&gt;                 16d   v1.20.0</span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get node |grep Ready|wc -l</span></span><br><span class="line">3</span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get node |grep Ready|wc -l &gt; num.txt</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#cat num.txt</span></span><br><span class="line">3</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>​    学习一门新的知识，肯定会有难度，但是我们可以一点点地去啃，然后消化它，坚持了下来，就会形成一个知识体系了，而不是期望<code>速成/一口吃个大胖子</code>。总之，学习还是要靠自己。</p>
+<p>​    今天就到这里，我们下次见。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210618190808485.png" alt="image-20210618190808485"></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">一个人</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://www.onlyonexl.cn/2021/06/19/21-%E7%AC%AC%E5%85%AD%E7%AB%A0-K8s%E8%B0%83%E5%BA%A6-Pod%E8%B0%83%E5%BA%A6%E6%8E%A7%E5%88%B6%E7%AF%87-20210611/">https://www.onlyonexl.cn/2021/06/19/21-%E7%AC%AC%E5%85%AD%E7%AB%A0-K8s%E8%B0%83%E5%BA%A6-Pod%E8%B0%83%E5%BA%A6%E6%8E%A7%E5%88%B6%E7%AF%87-20210611/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">一个人</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/k8s/">
+                                    <span class="chip bg-color">k8s</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/06/19/22-%E7%AC%AC%E4%BA%94%E7%AB%A0-K8s%E7%AE%A1%E7%90%86%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F-%E4%B8%8B-Pod%E7%AF%87-20210609/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="22-第五章-K8s管理应用生命周期-下-Pod篇-20210609">
+                        
+                        <span class="card-title">22-第五章-K8s管理应用生命周期-下-Pod篇-20210609</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-06-19
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/k8s/" class="post-category">
+                                    k8s
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/k8s/">
+                        <span class="chip bg-color">k8s</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/06/13/20-%E5%AE%9E%E6%88%98-K8s%E7%AE%A1%E7%90%86%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F-Deployment-20210613/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="20-实战-K8s管理应用生命周期-Deployment-20210613">
+                        
+                        <span class="card-title">20-实战-K8s管理应用生命周期-Deployment-20210613</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/k8s/" class="post-category">
+                                    k8s
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/k8s/">
+                        <span class="chip bg-color">k8s</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">一个人</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/OnlyOnexl" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:2675263825@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2675263825" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2675263825" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,1600 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="12-避坑实战-快速部署一个kubernetes集群(超详细-已成功测试)-20210605, Love">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>12-避坑实战-快速部署一个kubernetes集群(超详细-已成功测试)-20210605 | Love</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Love</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Love</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">12-避坑实战-快速部署一个kubernetes集群(超详细-已成功测试)-20210605</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/k8s/">
+                                <span class="chip bg-color">k8s</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/k8s/" class="post-category">
+                                k8s
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-06-05
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="避坑实战-快速部署一个kubernetes集群-超详细-已成功测试-20210605"><a href="#避坑实战-快速部署一个kubernetes集群-超详细-已成功测试-20210605" class="headerlink" title="避坑实战-快速部署一个kubernetes集群(超详细-已成功测试)-20210605"></a>避坑实战-快速部署一个kubernetes集群(超详细-已成功测试)-20210605</h2><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605073253078.png" alt="image-20210605073253078"></p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>[TOC]</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>本人博客宗旨：</strong><br>1.本人提供的实战文档过程超详细，拿着我的博客，每个人最终都可以成功测试出实验现象，完全避免网上的一些埋着很多坑的博客(特别浪费时间，个人深有感触)；<br>2.自己博客主张以实战为主，但同时会辅助一些理论知识，理论部分请主要查看基础知识章节；<br>3.博客力求排版美观、组织语言简明扼要；<br>4.提供实验涉及软件、源码；<br>5.实验过程如有遇到任何问题或者文章中有任何不足之处，欢迎留言或随时联系鄙人，微信：x2675263825，QQ：2675263825，在it学习的道路上，让我们一起共同成长!</p>
+<h2 id="鸣谢"><a href="#鸣谢" class="headerlink" title="鸣谢"></a>鸣谢</h2><p>​    这里，非常感谢<code>阿良讲师</code>分享的优质且负责的课程，本篇文章是从老师课程及文档整理而来的，欢迎小伙伴查阅。</p>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><h3 id="1-生产环境部署K8s的2种方式"><a href="#1-生产环境部署K8s的2种方式" class="headerlink" title="1.生产环境部署K8s的2种方式"></a>1.生产环境部署K8s的2种方式</h3><p>目前生产部署Kubernetes集群主要有两种方式：</p>
+<p><strong>(1)kubeadm</strong></p>
+<p>Kubeadm是一个工具，提供kubeadm init和kubeadm join，用于快速部署Kubernetes集群。<br>部署地址：<a target="_blank" rel="noopener" href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm/">https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kubeadm工具功能：</span><br><span class="line">•kubeadm init：初始化一个Master节点</span><br><span class="line">•kubeadm join：将工作节点加入集群</span><br><span class="line">•kubeadm upgrade：升级K8s版本</span><br><span class="line">•kubeadm token：管理 kubeadm join 使用的令牌</span><br><span class="line">•kubeadm reset：清空 kubeadm init 或者 kubeadm join 对主机所做的任何更改</span><br><span class="line">•kubeadm version：打印 kubeadm 版本</span><br><span class="line">•kubeadm alpha：预览可用的新功能</span><br><span class="line"></span><br><span class="line"><span class="comment">#kubeadm方式，除了kubelet外，其组件都是以容器化方式部署的；</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>(2)二进制</strong></p>
+<p>推荐，从官方下载发行版的二进制包，手动部署每个组件，组成Kubernetes集群。<br>下载地址：<a target="_blank" rel="noopener" href="https://github.com/kubernetes/kubernetes/releases">https://github.com/kubernetes/kubernetes/releases</a></p>
+<p><strong>二两的区别</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1、早期部署就一种二进制方式！--&gt;现在企业中二进制方式部署占比比较大的一个原因；(使用占比40%)</span><br><span class="line">    之前二进制，随后也继续使用二进制方式进行升级等；</span><br><span class="line">    master:3个组件+1个etcd</span><br><span class="line">    node:2个组件+1个docker</span><br><span class="line"></span><br><span class="line">    优点：后期比较容易维护；因为我们了解了每一个组件的配置和它所在的位置；</span><br><span class="line">    缺点：部署比较复杂；</span><br><span class="line"></span><br><span class="line">2、kubeadm--官方发提供的一种方式，现在已经很成熟了，生产环境中可以放心使用的；(使用占比60%)</span><br><span class="line">    封装；</span><br><span class="line"></span><br><span class="line">    优点：安装比较简单，非常有利于小白；</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">    生产中一般就只有kubeadm和二进制安装这2种方式来部署k8s集群的；</span><br><span class="line">    工作中，你看到的一些工具、管理平台其实100%都是基于这2种方式来做的；</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">    这2种安装方式我们都要去掌握；</span><br><span class="line">    至于选择哪一种，你熟悉哪一个，就用哪一个就好；</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-服务器硬件配置推荐"><a href="#2-服务器硬件配置推荐" class="headerlink" title="2.服务器硬件配置推荐"></a>2.服务器硬件配置推荐</h3><p>服务器要求：<br>•建议最小硬件配置：2核CPU、2G内存、20G硬盘<br>•服务器最好可以访问外网，会有从网上拉取镜像需求，如果服务器不能上网，需要提前下载对应镜像并导入节点(docker save和docker load)</p>
+<p>说明：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">注意：</span><br><span class="line">    如果是实验环境，我们用1台2c,2g的机器就可以做k8s实验了，95%以上的实验都可以完成；</span><br><span class="line"></span><br><span class="line">    那么为什么我们平常测试时，一般会用2-3台来做实验呢？ </span><br><span class="line">    --&gt;因为k8s是一个分布式应用，我们用多台可以更容易去模拟一些功能出来；但是单机也能实现这个功能，但可能这个效果看起来不是很明显；</span><br><span class="line">    --&gt;所以，建议搭建用2-3台去搭建一个k8s集群；</span><br><span class="line"></span><br><span class="line">    当然取决于你在里面跑多少应用？</span><br><span class="line">    当然k8s给你整不出来超过宿主机能力范围之内的事儿；</span><br><span class="line"></span><br><span class="line">    我们自己的测试环境：</span><br><span class="line">        3台：2c,2g，硬盘20g以上就够了；centos 7.x就好；</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210601131216615.png" alt="image-20210601131216615"></p>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><p><strong>1、硬件环境</strong></p>
+<p>3台虚机 2c2g,20g。(nat模式，可访问外网)</p>
+<table>
+<thead>
+<tr>
+<th align="center">角色</th>
+<th align="center">主机名</th>
+<th align="center">ip</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">master节点</td>
+<td align="center">k8s-master</td>
+<td align="center">172.29.9.31</td>
+</tr>
+<tr>
+<td align="center">node节点</td>
+<td align="center">k8s-node1</td>
+<td align="center">172.29.9.32</td>
+</tr>
+<tr>
+<td align="center">node节点</td>
+<td align="center">k8s-node2</td>
+<td align="center">172.29.9.33</td>
+</tr>
+</tbody></table>
+<p><strong>2、软件环境</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">软件</th>
+<th align="center">版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">操作系统</td>
+<td align="center">centos7.7_x64 1908 mini(其他centos7.x版本也行)</td>
+</tr>
+<tr>
+<td align="center">docker</td>
+<td align="center">20.10.7-ce</td>
+</tr>
+<tr>
+<td align="center">kubernetes</td>
+<td align="center">v1.20.0</td>
+</tr>
+</tbody></table>
+<p><strong>3、架构图</strong></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210601213547203.png" alt="image-20210601213547203"></p>
+<ul>
+<li>注意：在将要做实验之前，请准备好如上3台虚机，并做好基础网络配置。然后做一个快照，方便后期回滚。</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605075027938.png" alt="image-20210605075027938"></p>
+<h2 id="实验软件"><a href="#实验软件" class="headerlink" title="实验软件"></a>实验软件</h2><p>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1bJwyaQlXX5ZL8Bq_9tNZBQ">https://pan.baidu.com/s/1bJwyaQlXX5ZL8Bq_9tNZBQ</a><br>提取码：iokw </p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605150750164.png" alt="image-20210605150750164"></p>
+<h2 id="0-集群环境配置-all节点均要配置"><a href="#0-集群环境配置-all节点均要配置" class="headerlink" title="0.集群环境配置(all节点均要配置)"></a>0.集群环境配置<font color=red>(all节点均要配置)</font></h2><h3 id="1-Linux基础环境配置"><a href="#1-Linux基础环境配置" class="headerlink" title="(1)Linux基础环境配置"></a>(1)Linux基础环境配置</h3><p>关闭且禁用如下服务：firewalld、NetworkManager、selinux </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld &amp;&amp; systemctl <span class="built_in">disable</span>  firewalld</span><br><span class="line">systemctl stop NetworkManager &amp;&amp; systemctl <span class="built_in">disable</span>  NetworkManager</span><br><span class="line"></span><br><span class="line">setenforce 0</span><br><span class="line">sed -i s/SELINUX=enforcing/SELINUX=disabled/ /etc/selinux/config</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-关闭swap分区"><a href="#2-关闭swap分区" class="headerlink" title="(2)关闭swap分区"></a>(2)关闭swap分区</h3><p>说明：以下提供了2种关闭swap分区的方法，这里2条命令都刷一下！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">swapoff -a</span><br><span class="line">sed -ri <span class="string">&#x27;s/.*swap.*/#&amp;/&#x27;</span> /etc/fstab</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#说明</span></span><br><span class="line">kubelet，它是不支持你启动swap的，如果你不把它关掉，kubelet是起不来的；</span><br><span class="line">可能kublet考虑到用swap做数据交换的话，对性能影响比较大；</span><br><span class="line">swap必须关，否则kubelet起不来,k8s集群起不来；</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-设置主机名"><a href="#3-设置主机名" class="headerlink" title="(3)设置主机名"></a>(3)设置主机名</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hostnamectl --static set-hostname k8s-master</span><br><span class="line">bash</span><br><span class="line"></span><br><span class="line">hostnamectl --static set-hostname k8s-node1</span><br><span class="line">bash</span><br><span class="line"></span><br><span class="line">hostnamectl --static set-hostname k8s-node2</span><br><span class="line">bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-在master添加hosts"><a href="#4-在master添加hosts" class="headerlink" title="(4)在master添加hosts"></a>(4)在master添加hosts</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat &gt;&gt; /etc/hosts &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">172.29.9.31 k8s-master1</span></span><br><span class="line"><span class="string">172.29.9.32 k8s-node1</span></span><br><span class="line"><span class="string">172.29.9.33 k8s-node2</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#注意：</span></span><br><span class="line">本次实验，这个只需要在master节点执行就好了；</span><br><span class="line">因为我们后面在用kubectrl去连接容器时，会用到这个主机名与它的对应关系；因为k8s使用这个主机名去注册到k8s集群，用主机名去连接kubelet。</span><br><span class="line"></span><br><span class="line">而有的文档这里都对所有节点添加了此项内容；</span><br><span class="line"><span class="comment">#个人建议对all节点均配置这个hosts文件内容；</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-将桥接的IPv4流量传递到iptables的链"><a href="#5-将桥接的IPv4流量传递到iptables的链" class="headerlink" title="(5)将桥接的IPv4流量传递到iptables的链"></a>(5)将桥接的IPv4流量传递到iptables的链</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; /etc/sysctl.d/k8s.conf &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">net.bridge.bridge-nf-call-ip6tables = 1</span></span><br><span class="line"><span class="string">net.bridge.bridge-nf-call-iptables = 1</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">sysctl --system  </span><br></pre></td></tr></table></figure>
+
+<p>说明：这个是一定要配置的；不配置的话，在安装过程中会有warning的；</p>
+<h3 id="6-时间同步"><a href="#6-时间同步" class="headerlink" title="(6)时间同步"></a>(6)时间同步</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install ntpdate -y</span><br><span class="line">ntpdate time.windows.com</span><br></pre></td></tr></table></figure>
+
+<p>说明：<br>因为里面涉及到证书，而证书对时间是很敏感的，里面的校验都是需要用到时间的，因此这3台机器必须保持时间同步；</p>
+<ul>
+<li>到此，集群初始化工作已经完成了，此时对3台机器做一个快照。</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605082617507.png" alt="image-20210605082617507"></p>
+<p>接下来，将在all节点安装Docker/kubeadm/kubelet。</p>
+<h2 id="1-安装Docker-kubeadm-kubelet-所有节点均要配置"><a href="#1-安装Docker-kubeadm-kubelet-所有节点均要配置" class="headerlink" title="1.安装Docker/kubeadm/kubelet(所有节点均要配置)"></a>1.安装Docker/kubeadm/kubelet<font color=red>(所有节点均要配置)</font></h2><h3 id="1-安装Docker"><a href="#1-安装Docker" class="headerlink" title="(1)安装Docker"></a>(1)安装Docker</h3><ul>
+<li>执行如下代码</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"></span><br><span class="line">yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"></span><br><span class="line">yum install docker-ce -y</span><br><span class="line"></span><br><span class="line">systemctl start docker &amp;&amp; systemctl <span class="built_in">enable</span> docker</span><br><span class="line"></span><br><span class="line">mkdir -p /etc/docker</span><br><span class="line">tee /etc/docker/daemon.json &lt;&lt;-<span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;registry-mirrors&quot;</span>:[<span class="string">&quot;https://dockerhub.azk8s.cn&quot;</span>,<span class="string">&quot;http://hub-mirror.c.163.com&quot;</span>,<span class="string">&quot;http://qtid6917.mirror.aliyuncs.com&quot;</span>]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>安装后验证</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#rpm -qa|grep docker</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#docker version</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#docker info</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605083802813.png" alt="image-20210605083802813"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605083418303.png" alt="image-20210605083418303"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605083441676.png" alt="image-20210605083441676"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605083726102.png" alt="image-20210605083726102"></p>
+<h3 id="2-添加阿里云YUM软件源"><a href="#2-添加阿里云YUM软件源" class="headerlink" title="(2)添加阿里云YUM软件源"></a>(2)添加阿里云YUM软件源</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; /etc/yum.repos.d/kubernetes.repo &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string">[kubernetes]</span></span><br><span class="line"><span class="string">name=Kubernetes</span></span><br><span class="line"><span class="string">baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64</span></span><br><span class="line"><span class="string">enabled=1</span></span><br><span class="line"><span class="string">gpgcheck=0</span></span><br><span class="line"><span class="string">repo_gpgcheck=0</span></span><br><span class="line"><span class="string">gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-安装kubeadm，kubelet和kubectl"><a href="#3-安装kubeadm，kubelet和kubectl" class="headerlink" title="(3)安装kubeadm，kubelet和kubectl"></a>(3)安装kubeadm，kubelet和kubectl</h3><p>由于版本更新频繁，这里指定版本号部署：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install -y kubelet-1.20.0 kubeadm-1.20.0 kubectl-1.20.0</span><br><span class="line">systemctl <span class="built_in">enable</span> kubelet</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>这边还需要注意的一个问题：</li>
+</ul>
+<p>我们用<code>yum list|grep kubeadm/kubectl/kubeket</code>查看阿里云k8s yum源，发现只显示v1.21版本的软件，但是这里用<code>yum install -y kubelet-1.20.0 kubeadm-1.20.0 kubectl-1.20.0</code>指定了版本号后，依然可以下载并安装指定的版本。<strong>同理，dcoker应该也是这样的情况。</strong></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605084302039.png" alt="image-20210605084302039"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605084426541.png" alt="image-20210605084426541"></p>
+<ul>
+<li>说明：这里要特别注意</li>
+</ul>
+<p><strong>我们不需要去启动kubelet服务，只要设置开机自启就好(此时，启动也启动不起来的)；</strong></p>
+<p><strong>因为要生成配置文件，这样才可以把kubelet拉起；</strong></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210602002236861.png" alt="image-20210602002236861"></p>
+<h2 id="2-创建Master节点-在master节点执行"><a href="#2-创建Master节点-在master节点执行" class="headerlink" title="2.创建Master节点(在master节点执行)"></a>2.创建Master节点<font color=red>(在master节点执行)</font></h2><ul>
+<li>执行如下代码</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kubeadm init \</span><br><span class="line">  --apiserver-advertise-address=172.29.9.31 \</span><br><span class="line">  --image-repository registry.aliyuncs.com/google_containers \</span><br><span class="line">  --kubernetes-version v1.20.0 \</span><br><span class="line">  --service-cidr=10.96.0.0/12 \</span><br><span class="line">  --pod-network-cidr=10.244.0.0/16 \</span><br><span class="line">  --ignore-preflight-errors=all</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#说明：</span></span><br><span class="line">kubeadm init \</span><br><span class="line">  --apiserver-advertise-address=172.29.9.31 \ <span class="comment">#这里的ip填自己master ip就好</span></span><br><span class="line">  --image-repository registry.aliyuncs.com/google_containers \ <span class="comment">#修改为阿里云的地址</span></span><br><span class="line">  --kubernetes-version v1.20.0 \ <span class="comment">#指定版本</span></span><br><span class="line">  --service-cidr=10.96.0.0/12 \</span><br><span class="line">  --pod-network-cidr=10.244.0.0/16 \ <span class="comment">#与下面部署的CNI网络组件yaml中保持一致</span></span><br><span class="line">  --ignore-preflight-errors=all</span><br><span class="line">  </span><br><span class="line">--apiserver-advertise-address 集群通告地址</span><br><span class="line">--image-repository 由于默认拉取镜像地址k8s.gcr.io国内无法访问，这里指定阿里云镜像仓库地址</span><br><span class="line">--kubernetes-version K8s版本，与上面安装的kubeadm/kubectl/kubelet一致</span><br><span class="line">--service-cidr 集群内部虚拟网络，Pod统一访问入口</span><br><span class="line">--pod-network-cidr Pod网络，与下面部署的CNI网络组件yaml中保持一致</span><br><span class="line">--ignore-preflight-errors=all 忽略不核心的报错；</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#说明</span></span><br><span class="line">初始化的时候会拉取镜像，--kubernetes-version v1.20.0 这里指定了版本，就指明了要拉取哪个版本的镜像;</span><br><span class="line">版本一定要和组件版本`yum install -y kubelet-1.20.0 kubeadm-1.20.0 kubectl-1.20.0`保持一致，否则会出现一些问题；</span><br><span class="line">它以容器的方式启动一个组件:</span><br><span class="line">[root@k8s-master ~]<span class="comment">#docker images</span></span><br><span class="line">REPOSITORY                                                        TAG       </span><br><span class="line">registry.aliyuncs.com/google_containers/kube-proxy                v1.20.0   </span><br><span class="line">registry.aliyuncs.com/google_containers/kube-apiserver            v1.20.0   </span><br><span class="line">registry.aliyuncs.com/google_containers/kube-controller-manager   v1.20.0   </span><br><span class="line">registry.aliyuncs.com/google_containers/kube-scheduler            v1.20.0   </span><br><span class="line">registry.aliyuncs.com/google_containers/etcd                      3.4.13-0  </span><br><span class="line">registry.aliyuncs.com/google_containers/coredns                   1.7.0     </span><br><span class="line">registry.aliyuncs.com/google_containers/pause                     3.2       </span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>执行过程截图</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605090344616.png" alt="image-20210605090344616"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605090430071.png" alt="image-20210605090430071"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605090442159.png" alt="image-20210605090442159"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605090450944.png" alt="image-20210605090450944"></p>
+<ul>
+<li>拉取到的镜像内容如下</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605090547037.png" alt="image-20210605090547037"></p>
+<ul>
+<li>==注意：kubeadm init工作流程==</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1、[preflight] 环境检查，拉取镜像(注意：拉取镜像是发生在这一步！！！)</span><br><span class="line">2、[certs] 证书生成</span><br><span class="line">3、[kubeconfig] kubeconfig文件生成 (kubeconfig文件是其他组件连接api-server所需要用到的文件；)</span><br><span class="line">4、[kubelet-start] 生成kubelet配置文件并启动 (注意：/var/lib/kubelet/config.yaml)</span><br><span class="line">5、[control-plane] 静态pod启动master组件，包括了etcd</span><br><span class="line">6、[mark-control-plane] 给master节点打一个roles和污点</span><br><span class="line">7、[bootstrap-token] 引导kubelet生成证书</span><br><span class="line">8、[addons] 安装coredns和kube-proxy</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>注意：此时再次查看kubelet服务，发现已经启动成功了</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605090714939.png" alt="image-20210605090714939"></p>
+<ul>
+<li><strong><font color=red>拷贝kubectl使用的连接k8s认证文件到默认路径</font></strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p <span class="variable">$HOME</span>/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf <span class="variable">$HOME</span>/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) <span class="variable">$HOME</span>/.kube/config</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>生成了用于工作节点连接master的命令</li>
+</ul>
+<p>初始化完成后，最后会输出一个join命令，<strong>先记住，下面用</strong>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubeadm join 172.29.9.31:6443 --token c7j1ek.pbljaz6acf43ygay \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:0b2baffe590188fe3628fa767d6ba1afd2d48c4e08b561e61eb1b8b824464a92</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>注意：在拷贝kubectl所需的配置文件后，我们可以用<code>kubectl get nodes</code>命令来查看master状态</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get nodes</span></span><br><span class="line"><span class="comment">#注：由于网络插件还没有部署，还没有准备就绪 NotReady</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605091134554.png" alt="image-20210605091134554"></p>
+<ul>
+<li>注意<br>一般在执行了kubeadm int后，只要能看到如下就代表集群部署已经没什么问题了：</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605091219083.png" alt="image-20210605091219083"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605091134554.png" alt="image-20210605091134554"></p>
+<p>接下来我们来执行在node节点join命令。</p>
+<h2 id="3-将Node节点加入到当前集群中-在node节点执行"><a href="#3-将Node节点加入到当前集群中-在node节点执行" class="headerlink" title="3.将Node节点加入到当前集群中(在node节点执行)"></a>3.将Node节点加入到当前集群中<font color=red>(在node节点执行)</font></h2><ul>
+<li>注意:如果当时忘记复制那个join命令了，该怎么办呢？</li>
+</ul>
+<p>默认token有效期为24小时，当过期之后，该token就不可用了。这时就需要重新创建token，可以直接使用命令快捷生成：(注意：如果token还在有效期的话，那么就会打印出原来的token)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在master节点上查看加入节点的命令：</span></span><br><span class="line"></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubeadm token create --print-join-command</span></span><br><span class="line">kubeadm join 172.29.9.31:6443 --token c7j1ek.pbljaz6acf43ygay \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:0b2baffe590188fe3628fa767d6ba1afd2d48c4e08b561e61eb1b8b824464a92</span><br><span class="line">[root@k8s-master ~]</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>开始join进群</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#在2个node节点执行如下命令：</span></span><br><span class="line"></span><br><span class="line">kubeadm join 172.29.9.31:6443 --token c7j1ek.pbljaz6acf43ygay \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:0b2baffe590188fe3628fa767d6ba1afd2d48c4e08b561e61eb1b8b824464a92</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>执行过程截图如下</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605091630902.png" alt="image-20210605091630902"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605091819881.png" alt="image-20210605091819881"></p>
+<ul>
+<li>注意：这里报这个域名解析时没有任何影响的。(你不想警告的话，就在all节点均填一下域名解析配置)</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605091902687.png" alt="image-20210605091902687"></p>
+<ul>
+<li>此时，再到master节点查看下集群状态，发现已经多出了2个node节点了。</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605091946937.png" alt="image-20210605091946937"></p>
+<p><strong>后续步骤基本在master节点进行操作了</strong>，到此，node节点已配置完成。</p>
+<p>下面，我们将配置网络组件-calico。</p>
+<h2 id="4-部署容器网络-CNI-Calico-在master节点执行"><a href="#4-部署容器网络-CNI-Calico-在master节点执行" class="headerlink" title="4.部署容器网络(CNI)-Calico(在master节点执行)"></a>4.部署容器网络(CNI)-Calico<font color=red>(在master节点执行)</font></h2><p><strong>Calico是一个纯三层的数据中心网络方案</strong>，是目前Kubernetes主流的网络方案。(工作中：calico用的比较多)</p>
+<ul>
+<li>下载YAML：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://docs.projectcalico.org/manifests/calico.yaml <span class="comment">#这个需要科学上网，建议直接使用我这边提供的calico.yaml文件</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210602062151349.png" alt="image-20210602062151349"></p>
+<ul>
+<li>编辑calicao的yaml文件</li>
+</ul>
+<p>将下载好的calico.yaml文件传到/root/目录下，进行编辑：</p>
+<p>下载完后还需要修改里面定义Pod网络（CALICO_IPV4POOL_CIDR），与前面kubeadm init的 –pod-network-cidr指定的一样。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#ll -h calico.yaml</span></span><br><span class="line">-rw-r--r-- 1 root root 185K Jun  2 06:23 calico.yaml</span><br><span class="line">[root@k8s-master ~]<span class="comment">#vim calico.yaml</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210602062509769.png" alt="image-20210602062509769"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605092422565.png" alt="image-20210605092422565"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210602062721197.png" alt="image-20210602062721197"></p>
+<ul>
+<li>修改完后文件后，部署：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f calico.yaml </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210602062838024.png" alt="image-20210602062838024"></p>
+<ul>
+<li>验证</li>
+</ul>
+<p>我们可以用如下命令来看一下这4个pod是否准备就绪，<strong>等Calico Pod都Running，节点也会准备就绪</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pods -n kube-system</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210602063130125.png" alt="image-20210602063130125"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210602063250826.png" alt="image-20210602063250826"></p>
+<ul>
+<li>==注意：或者我们可以把calico的镜像离线给下载下来，这样就省事儿了。==</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210602063759658.png" alt="image-20210602063759658"></p>
+<p>接下来，我们将部署一下web ui dashboard。</p>
+<h2 id="5-部署Web-UI-Dashboard-在master节点执行"><a href="#5-部署Web-UI-Dashboard-在master节点执行" class="headerlink" title="5.部署Web UI(Dashboard)(在master节点执行)"></a>5.部署Web UI(Dashboard)<font color=red>(在master节点执行)</font></h2><p>Dashboard是官方提供的一个UI，可用于基本管理K8s资源。</p>
+<ul>
+<li>下载</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.3/aio/deploy/recommended.yaml</span><br><span class="line"></span><br><span class="line"><span class="comment">#需要科学上网下载</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>这里使用我下载好的就行</li>
+</ul>
+<p>课件中文件名是：kubernetes-dashboard.yaml</p>
+<p>这里手动上传<code>kubernetes-dashboard.yaml</code>文件到系统上：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603002204188.png" alt="image-20210603002204188"></p>
+<ul>
+<li>修改yaml文件</li>
+</ul>
+<p><strong>默认Dashboard只能集群内部访问，修改Service为NodePort类型，暴露到外部</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#vim kubernetes-dashboard.yaml</span></span><br><span class="line"></span><br><span class="line">vi recommended.yaml</span><br><span class="line">...</span><br><span class="line">kind: Service</span><br><span class="line">apiVersion: v1</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    k8s-app: kubernetes-dashboard</span><br><span class="line">  name: kubernetes-dashboard</span><br><span class="line">  namespace: kubernetes-dashboard</span><br><span class="line">spec:</span><br><span class="line">  ports:</span><br><span class="line">    - port: 443</span><br><span class="line">      targetPort: 8443</span><br><span class="line">      nodePort: 30001 <span class="comment">#更改位置1</span></span><br><span class="line">  selector:</span><br><span class="line">    k8s-app: kubernetes-dashboard</span><br><span class="line">  <span class="built_in">type</span>: NodePort <span class="comment">#更改位置2</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">#说明：</span></span><br><span class="line">只需要在service字段添加nodePort: 30001即可；</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603002523716.png" alt="image-20210603002523716"></p>
+<p>配置后内容：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603002923440.png" alt="image-20210603002923440"></p>
+<ul>
+<li>改完之后，我们直接apply一下就好：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl apply -f kubernetes-dashboard.yaml</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603003329476.png" alt="image-20210603003329476"></p>
+<ul>
+<li>验证</li>
+</ul>
+<p>执行<code>kubectl get pods -n kubernetes-dashboard</code>命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pods -n kubernetes-dashboard</span></span><br><span class="line">NAME                                         READY   STATUS    RESTARTS   AGE</span><br><span class="line">dashboard-metrics-scraper-7b59f7d4df-68hj8   1/1     Running   0          97s</span><br><span class="line">kubernetes-dashboard-74d688b6bc-bkw4h        1/1     Running   0          97s</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#说明</span></span><br><span class="line">dashboard-metrics-scraper-7b59f7d4df-68hj8(收集指标的容器)</span><br><span class="line">kubernetes-dashboard-74d688b6bc-bkw4h(主容器)，只要主容器启动了的话，我们就可以访问了；</span><br><span class="line"><span class="comment">#注意，这个kubernetes-dashboard叫做命名空间；</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603003506006.png" alt="image-20210603003506006"></p>
+<p>浏览访问</p>
+<p>访问地址：<a target="_blank" rel="noopener" href="https://nodeip:30001/">https://NodeIP:30001</a></p>
+<p><a target="_blank" rel="noopener" href="https://172.29.9.32:30001/">https://172.29.9.32:30001/</a></p>
+<p>此时你访问集群内的任意ip:30001的话，就可以访问了ui界面了：</p>
+<p>这里需要注意的是必须是https，如果是httpd的话，会报如下错误：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603003954084.png" alt="image-20210603003954084"></p>
+<p><a target="_blank" rel="noopener" href="https://172.29.9.32:30001/">https://172.29.9.32:30001/</a></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603004102442.png" alt="image-20210603004102442"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603004131500.png" alt="image-20210603004131500"></p>
+<ul>
+<li>创建service account并绑定默认cluster-admin管理员集群角色：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建用户</span></span><br><span class="line">$ kubectl create serviceaccount dashboard-admin -n kube-system</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用户授权</span></span><br><span class="line">$ kubectl create clusterrolebinding dashboard-admin --clusterrole=cluster-admin --serviceaccount=kube-system:dashboard-admin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取用户Token</span></span><br><span class="line">$ kubectl describe secrets -n kube-system $(kubectl -n kube-system get secret | awk <span class="string">&#x27;/dashboard-admin/&#123;print $1&#125;&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603004534783.png" alt="image-20210603004534783"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJhbGciOiJSUzI1NiIsImtpZCI6ImVGcjgxMFVRY3NISWlsbmpzTHdkLWFXRVFVcmFiUTkxRkI1M0gzdFFEUEUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkYXNoYm9hcmQtYWRtaW4tdG9rZW4tcDQycnIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGFzaGJvYXJkLWFkbWluIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNjEzMmJmMjAtYTY2NS00MmRhLWE4ZmMtZmZjZDNlMjgxYzk2Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmRhc2hib2FyZC1hZG1pbiJ9.Yyo-ojbezUjcbsvvepwhHj5yeuak16y0GHPXbbccJTdV7fqnAoU7OUAjfisvvmpci03R71PZFhuU3Vmv4cUuiRchDSUnuMucDSyYa5_sysiMhS5Jenm46CYEg7ljuy73v8iFvXf5uAPIJbxyIwf_C95pdBK22qpzZCqOyk1WuOisfCFxUA5-APjXSKJhczmLIB0iU5uqet-yHbWx-qKsAxuyarvA4b2TB-ckToC98OFipVWMColjv18h7GkxfS0i6CM4u_bA7_76xGrDEVRDgOenbKizzmXxPn_PpzXBXkIkGL9X3_fB7w6uureb4TPTFyxaQenA0Fba0GPJUXRjpQ</span><br></pre></td></tr></table></figure>
+
+<p>将用户token粘贴到如下位置：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603004609021.png" alt="image-20210603004609021"></p>
+<p>==实验现象成功，完美！==</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603004758580.png" alt="image-20210603004758580"></p>
+<ul>
+<li>这边需要注意的是，如果从集群的另一个节点再次打开k8s ui的话，这边还需要再次输入token：</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603004913704.png" alt="image-20210603004913704"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603004936858.png" alt="image-20210603004936858"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603004943562.png" alt="image-20210603004943562"></p>
+<p>接下来，我们启一个pod做下测试，看看效果。</p>
+<h2 id="6-测试：牛刀小试，快速部署一个网站-在master节点执行"><a href="#6-测试：牛刀小试，快速部署一个网站-在master节点执行" class="headerlink" title="6.测试：牛刀小试，快速部署一个网站(在master节点执行)"></a>6.测试：牛刀小试，快速部署一个网站<font color=red>(在master节点执行)</font></h2><p><strong>1、使用Deployment控制器部署镜像：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl create deployment web --image=nginx</span></span><br><span class="line">deployment.apps/web created</span><br><span class="line">[root@k8s-master ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210602235418863.png" alt="image-20210602235418863"></p>
+<p>此时用<code>kubectl get pods</code>命令查看pod是否是运行的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get pods</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get deploy</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210602235820330.png" alt="image-20210602235820330"></p>
+<p><strong>2、使用Service将Pod暴露出去：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl expose deployment web --port=80 --target-port=80 --type=NodePort</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#备注：第一个--port是宿主机端号，第二个--target--port是容器服务的端口号；</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603000344978.png" alt="image-20210603000344978"></p>
+<p>用<code>kubectl get service</code>命令查看刚才创建的service：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get service</span></span><br><span class="line">[root@k8s-master ~]<span class="comment">#kubectl get svc</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603000525946.png" alt="image-20210603000525946"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603001438115.png" alt="image-20210603001438115"></p>
+<p><strong>3、访问应用：</strong>==(实验现象符合预期，完美！)==<br><a href="http://NodeIP:Port">http://NodeIP:Port</a> # 端口随机生成，通过get svc获取</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#注意：此时你通过任意的nodeip:端口都可访问nginx应用；(masterip:端口是不行的)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603001235870.png" alt="image-20210603001235870"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603001106927.png" alt="image-20210603001106927"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603001115384.png" alt="image-20210603001115384"></p>
+<ul>
+<li>此时，再做一个实验快照。</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210603001747198.png" alt="image-20210603001747198"></p>
+<h2 id="安装k8s集群过程需要注意的地方"><a href="#安装k8s集群过程需要注意的地方" class="headerlink" title="安装k8s集群过程需要注意的地方"></a>安装k8s集群过程需要注意的地方</h2><h3 id="1-善于利用快照"><a href="#1-善于利用快照" class="headerlink" title="1.善于利用快照"></a>1.善于利用快照</h3><p>注意做好相应的快照，方便后期能快速恢复到一个纯净的环境。</p>
+<h3 id="2-善用多窗口批量执行命令"><a href="#2-善用多窗口批量执行命令" class="headerlink" title="2.善用多窗口批量执行命令"></a>2.善用多窗口批量执行命令</h3><p>在需要对3台机器做同样操作命令时，自己使用的是mobaxterm的多命令行模式进行操作的。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210601053657829.png" alt="image-20210601053657829"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210601053813522.png" alt="image-20210601053813522"></p>
+<p>还有使用这个需要注意的是：<strong>如果要同时刷很多命令的话，复制代码后，要点击下这里的Multi-paste才可以</strong>。(默认在终端执行单条命令才是有效果的)</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210601061446672.png" alt="image-20210601061446672"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>关于快速部署一个Kubernetes集群的步骤可以概括如下：</p>
+<p>0.集群环境配置</p>
+<p>1.安装Docker</p>
+<p>2.创建一个Master节点:<code>kubeadm init</code></p>
+<p>3.将一个Node节点加入到当前集群中:<code>kubeadm join &lt;Master节点的IP和端口&gt;</code></p>
+<p>4.部署容器网络（CNI）: <code>kubectl apply -f calico.yaml</code></p>
+<p>5.部署Web UI（Dashboard）</p>
+<p>​    以上就是如何快速搭建一个kubernetets集群的方法了，其实过程挺简单的，初次搭建，可能会遇到一些问题，并且对一些概念不清楚，但是先把实验结果做出来，后续再进一步学习k8s理论等。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210605073341190.png" alt="image-20210605073341190"></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">一个人</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://www.onlyonexl.cn/2021/06/05/12-%E9%81%BF%E5%9D%91%E5%AE%9E%E6%88%98-%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E4%B8%80%E4%B8%AAkubernetes%E9%9B%86%E7%BE%A4(%E8%B6%85%E8%AF%A6%E7%BB%86-%E5%B7%B2%E6%88%90%E5%8A%9F%E6%B5%8B%E8%AF%95)-20210605/">https://www.onlyonexl.cn/2021/06/05/12-%E9%81%BF%E5%9D%91%E5%AE%9E%E6%88%98-%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E4%B8%80%E4%B8%AAkubernetes%E9%9B%86%E7%BE%A4(%E8%B6%85%E8%AF%A6%E7%BB%86-%E5%B7%B2%E6%88%90%E5%8A%9F%E6%B5%8B%E8%AF%95)-20210605/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">一个人</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/k8s/">
+                                    <span class="chip bg-color">k8s</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/06/05/14-%E5%AE%9E%E6%88%98-%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E7%BD%91%E7%BB%9C%E4%B8%8A%E4%B8%8B%E8%BD%BD%E7%9A%84%E8%BD%AF%E4%BB%B6%E5%8C%85%E5%81%9A%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84yum%E6%BA%90%E4%BB%93-2010606/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="14-实战-如何使用网络上下载的软件包做一个自己的yum源仓-2010606">
+                        
+                        <span class="card-title">14-实战-如何使用网络上下载的软件包做一个自己的yum源仓-2010606</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-06-05
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/yum/" class="post-category">
+                                    yum
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/yum/">
+                        <span class="chip bg-color">yum</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/06/04/11-%E9%81%BF%E5%9D%91%E5%AE%9E%E6%88%98-DockerImage%E7%9A%84%E5%8F%91%E5%B8%83(%E8%B6%85%E8%AF%A6%E7%BB%86-%E5%B7%B2%E6%88%90%E5%8A%9F%E6%B5%8B%E8%AF%95)-2010604/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="11-避坑实战-DockerImage的发布(超详细-已成功测试)-2010604">
+                        
+                        <span class="card-title">11-避坑实战-DockerImage的发布(超详细-已成功测试)-2010604</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/docker/" class="post-category">
+                                    docker
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/docker/">
+                        <span class="chip bg-color">docker</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">一个人</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/OnlyOnexl" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:2675263825@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2675263825" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2675263825" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

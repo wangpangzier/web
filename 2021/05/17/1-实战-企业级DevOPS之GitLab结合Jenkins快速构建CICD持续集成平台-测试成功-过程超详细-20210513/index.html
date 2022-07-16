@@ -1,0 +1,1899 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="1 实战-企业级DevOPS之GitLab结合Jenkins快速构建CICD持续集成平台(测试成功-过程超详细)-20210513, Love">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>1 实战-企业级DevOPS之GitLab结合Jenkins快速构建CICD持续集成平台(测试成功-过程超详细)-20210513 | Love</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Love</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Love</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">1 实战-企业级DevOPS之GitLab结合Jenkins快速构建CICD持续集成平台(测试成功-过程超详细)-20210513</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/CI-CD/">
+                                <span class="chip bg-color">CI/CD</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/CI-CD/" class="post-category">
+                                CI/CD
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-05-17
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="实战-企业级DevOPS之GitLab结合Jenkins快速构建CICD持续集成平台-测试成功-搭建过程超详细-20210513"><a href="#实战-企业级DevOPS之GitLab结合Jenkins快速构建CICD持续集成平台-测试成功-搭建过程超详细-20210513" class="headerlink" title="实战-企业级DevOPS之GitLab结合Jenkins快速构建CICD持续集成平台(测试成功-搭建过程超详细)-20210513"></a>实战-企业级DevOPS之GitLab结合Jenkins快速构建CICD持续集成平台(测试成功-搭建过程超详细)-20210513</h2><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/20210517074745.png" alt="image-20210513085556430"></p>
+<p>[TOC]</p>
+<h2 id="版权说明"><a href="#版权说明" class="headerlink" title="版权说明"></a>版权说明</h2><p>​    次文档参考于<code>IT学神教育-MK老师</code>直播，经自己再次整理而来，这里特别感谢mk老师上课细致的讲解。</p>
+<p>​    各位小伙伴在搭建过程中如有遇到任何问题，可随时联系本人哦，V:2675263825，Q:2675263825.</p>
+<h2 id="实验涉及软件获取路径"><a href="#实验涉及软件获取路径" class="headerlink" title="实验涉及软件获取路径"></a>实验涉及软件获取路径</h2><p>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1u2DV65zfwUPkGQowFLBtQQ">https://pan.baidu.com/s/1u2DV65zfwUPkGQowFLBtQQ</a><br>提取码：6rff </p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/20210517074803.png" alt="image-20210517073304926"></p>
+<h2 id="一、基础知识"><a href="#一、基础知识" class="headerlink" title="一、基础知识"></a>一、基础知识</h2><h3 id="1-1-什么是GitLab"><a href="#1-1-什么是GitLab" class="headerlink" title="1.1 什么是GitLab?"></a>1.1 什么是GitLab?</h3><p>​    Gitlab是一个利用 <strong>Ruby on Rails</strong> 开发的开源应用程序，<strong>实现一个自托管的 Git 项目仓库</strong>，可通过 Web界面进行访问公开的或者私人项目。<strong>Ruby on Rails 是一个可以使你开发、部署、维护 web 应用程序变得简单的框架</strong>。</p>
+<p>​    GitLab 拥有与 Github 类似的功能，<strong>能够浏览源代码，管理缺陷和注释</strong>。可以管理团队对仓库的访<br>问，<strong>它非常易于浏览提交过的版本并提供一个文件历史库</strong>。<strong>它还提供一个代码片段收集功能可以轻松实现代码复用，便于日后有需要的时候进行查找。</strong></p>
+<p>​    GitLab 中文网：<a target="_blank" rel="noopener" href="https://www.gitlab.cc/installation/#centos-7">https://www.gitlab.cc/installation/#centos-7</a></p>
+<p><a target="_blank" rel="noopener" href="https://about.gitlab.com/">https://about.gitlab.com/</a></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/20210517074821.png" alt="image-20210426054304827"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426054352355.png" alt="image-20210426054352355"></p>
+<ul>
+<li>==GitLab 和 GitHub 的区别==</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210425235308797.png" alt="image-20210425235308797"></p>
+<p><strong>相同点</strong>:<br><strong>二者都是基于 web 的 Git 仓库</strong>，<strong>在很大程度上 GitLab 是仿照 GitHub 来做的</strong>，它们都提供了分享开源项目的平台，为开发团队提供了存储、分享、发布和合作开发项目的<strong>中心化云存储的场所</strong>。</p>
+<p><strong>不同点</strong>：</p>
+<ol>
+<li><strong>GitHub 个人私有仓库可以邀请最多 3 个人协合开发,超过 3 个人就收费</strong>。<strong>GitLab 可以在上面创建</strong><br><strong>私人的免费仓库</strong>。</li>
+<li><strong>GitLab 让开发团队对他们的代码仓库拥有更多的控制</strong>，相比于 GitHub，它有不少的特色：允许<br>免费设置仓库权限；允许用户选择分享一个 project 的部分代码；允许用户设置 project 的获取权限，进一步的提升安全性；可以设置获取到团队整体的改进进度；通过 innersourcing 让不在权限范围内的人访问不到该资源。</li>
+</ol>
+<p><strong>总结</strong>：从代码私有性方面来看，有时公司并不希望员工获取到全部的代码，这个时候 GitLab 无疑是<br>更好的选择。<strong>但对于开源项目而言，GitHub 依然是代码托管的首选</strong>。</p>
+<p>备注：</p>
+<p>GitLab和Github他们的定位是不同的；<br>    <strong>gitlab–公司；</strong><br>    <strong>github–个人；</strong></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210425235914493.png" alt="image-20210425235914493"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426054352355.png" alt="image-20210426054352355"></p>
+<p>==git 相关概念==</p>
+<ul>
+<li><strong>git</strong> 是一种版本控制系统，是一个命令，是一种工具；</li>
+<li><strong>gitlib</strong> 是用于实现 git 功能的开发库；</li>
+<li>github 是一个基于 git 实现的在<strong>线代码托管仓库</strong>，包含一个网站界面，向互联网开放；</li>
+<li>gitlab 是一个基于 git 实现的<strong>在线代码仓库托管软件</strong>，一般用于在企业内部网络搭建 <strong>git 私服</strong>；注： <strong>gitlab-ce 社区版 ； gitlab-ee 是企业版，收费</strong></li>
+</ul>
+<h3 id="1-2-什么是Jenkins"><a href="#1-2-什么是Jenkins" class="headerlink" title="1.2 什么是Jenkins?"></a>1.2 什么是Jenkins?</h3><p>Jenkins 概述：是一个开源软件项目，<strong>是基于 Java 开发的一种持续集成工具</strong>，用于监控持续重复的<br>工作，旨在提供一个开放易用的软件平台，使软件的持续集成变成可能。</p>
+<p>网方网站：<a target="_blank" rel="noopener" href="https://jenkins.io/">https://jenkins.io/</a></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/20210517075000.png" alt="image-20210425234409314"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210425234501643.png" alt="image-20210425234501643"></p>
+<h3 id="1-3-持续集成-CI-、持续交付、持续部署-CD-概念"><a href="#1-3-持续集成-CI-、持续交付、持续部署-CD-概念" class="headerlink" title="1.3 持续集成(CI)、持续交付、持续部署 (CD)概念?"></a>1.3 持续集成(CI)、持续交付、持续部署 (CD)概念?</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">持续集成：Continuous Integration； CI</span><br><span class="line">持续交付：Continuous Delivery;	CD</span><br><span class="line">持续部署：Continuous deployment；	CD</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>持续集成</strong>：持续集成（Continuous integration）持续集成是指开发者在代码的开发过程中，<br><strong>可以频繁的将代码部署集成到主干</strong>，并进行<strong>自动化测试</strong>。<strong>开发-》代码编译-》测试-》</strong></li>
+<li><strong>持续交付</strong>：持续交付指的是在持续集成的环境基础之上，<strong>将代码部署到预生产环境</strong>。</li>
+<li><strong>持续部署</strong>：在持续交付的基础上，<strong>把部署到生产环境的过程自动化</strong>。</li>
+</ul>
+<h3 id="1-4-持续集成与持续部署平台-Devops"><a href="#1-4-持续集成与持续部署平台-Devops" class="headerlink" title="1.4 持续集成与持续部署平台:Devops"></a>1.4 持续集成与持续部署平台:Devops</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">K8S能和Devops这个平台很好地结合在一起！</span><br><span class="line"></span><br><span class="line">code：编程</span><br><span class="line">build：编译</span><br><span class="line"><span class="built_in">test</span>：测试</span><br><span class="line">release：发布</span><br><span class="line">deploy：部署（注意）</span><br><span class="line">operate：维护</span><br><span class="line">monitor：监控</span><br><span class="line">plan：计划</span><br><span class="line"></span><br><span class="line">例如：</span><br><span class="line">GitLab+jenkins;</span><br><span class="line">Coding也是一个devops平台；</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/20210517075201.png" alt="image-20210425230908015"></p>
+<h2 id="二、搭建过程"><a href="#二、搭建过程" class="headerlink" title="二、搭建过程"></a>二、搭建过程</h2><h3 id="2-1-实验环境"><a href="#2-1-实验环境" class="headerlink" title="2.1 实验环境"></a>2.1 实验环境</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">本次测试虚机环境：</span><br><span class="line">    1. 1台windows10笔记本</span><br><span class="line">    2. 1台centos7.7 1908虚机  8G内存，2c CPU,硬盘大小任意；(注意：内存和cpu越大越好，这些都是虚拟设置，实验期间可以设置的大些，不影响pc正常使用；)   虚拟机最少需要 6G 内存，不然后期运行时，内存不够用，直接报错。 我这里给 8G</span><br><span class="line">    3. 网路设置：本次机器使用ip：172.29.1.11 255.255.0.0</span><br><span class="line">        nat网络(保证虚机可上外网)</span><br><span class="line">        vmworkstation软件网络设置：</span><br><span class="line">            子网ip：172.29.0.0  子网掩码：255.255.0.0 /16位   B类地址：主机位为：16位，网络位为0(代表只要一个子网，也就是172.29.0.0；可用ip：2^16-2) </span><br><span class="line">            dhcp：172.2.9.1-172.29.9.254</span><br><span class="line">            网关：172.29.0.254</span><br><span class="line">            本地vmnet8虚拟网卡ip默认为：172.29.0.1 255.255.0.</span><br><span class="line">            </span><br><span class="line"> 本次涉及密码：</span><br><span class="line"> 	00. linux机器：root/123456 22端口</span><br><span class="line">	01.登录 gitlab http://172.29.9.11/ 用户名： root 密码： xuegod.cn </span><br><span class="line">	02.登录 jenkins http://172.29.9.11:198/ 用户名： admin 密码： 123456</span><br><span class="line">	03.gitlab用户账号密码：onexlforyou/xuegod.cn</span><br><span class="line">		git@172.29.9.10:xuegod/xuegod-web.git</span><br><span class="line">	04.163邮箱账号：https://mail.163.com/  账号：Onexlforyou 密码登录密码为自己最强势密码；</span><br><span class="line">	</span><br><span class="line">jenkins版本：</span><br><span class="line">	jenkins-2.277.3-1.1.noarch.rpm</span><br><span class="line">gitlab版本：</span><br><span class="line">	gitlab-ce-13.9.3-ce.0.el7.x86_64.rpm</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-初始化配置"><a href="#2-2-初始化配置" class="headerlink" title="2.2 初始化配置"></a>2.2 初始化配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">(1)配置主机名及虚机ip</span><br><span class="line">[root@GitlabJenkins ~]<span class="comment"># hostnamectl --static set-hostname Gitlab</span></span><br><span class="line">[root@GitlabJenkins ~]<span class="comment"># exec bash</span></span><br><span class="line">[root@Devops ~]<span class="comment">#</span></span><br><span class="line"></span><br><span class="line">(2)初始化环境配置（关闭且禁用防火墙/NetwokManager/selinux）</span><br><span class="line">[root@Devops ~]<span class="comment"># systemctl stop firewalld &amp;&amp; systemctl disable  firewalld &amp;&amp; systemctl stop NetworkManager &amp;&amp; systemctl disable  NetworkManager</span></span><br><span class="line">[root@Devops ~]<span class="comment"># setenforce 0</span></span><br><span class="line">setenforce: SELinux is disabled</span><br><span class="line">[root@Devops ~]<span class="comment"># sed -i s/SELINUX=enforcing/SELINUX=disabled/ /etc/selinux/config</span></span><br><span class="line"></span><br><span class="line">(3)配置yum源及安装常用软件</span><br><span class="line">[root@Devops ~]<span class="comment"># cd /etc/yum.repos.d/</span></span><br><span class="line">[root@Devops yum.repos.d]<span class="comment"># mkdir backup</span></span><br><span class="line">[root@Devops yum.repos.d]<span class="comment"># mv * backup/</span></span><br><span class="line">[root@Devops yum.repos.d]<span class="comment"># wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span></span><br><span class="line">[root@Devops yum.repos.d]<span class="comment"># yum clean all</span></span><br><span class="line">[root@Devops yum.repos.d]<span class="comment"># yum makecache</span></span><br><span class="line"></span><br><span class="line">[root@Devops yum.repos.d]<span class="comment"># yum install -y net-tools</span></span><br><span class="line">[root@Devops yum.repos.d]<span class="comment"># yum install -y vim</span></span><br><span class="line">[root@Devops yum.repos.d]<span class="comment"># yum install -y wget</span></span><br><span class="line">[root@Devops yum.repos.d]<span class="comment"># yum install -y lrzsz </span></span><br><span class="line">[root@Devops yum.repos.d]<span class="comment"># yum install -y iproute</span></span><br></pre></td></tr></table></figure>
+
+<p>此时，对配置好初始环境的虚机关机做一个快照，避免后期实验失败以快速进行还原！</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210513084835182.png" alt="image-20210513084835182"></p>
+<h3 id="2-3-搭建Gitlab平台"><a href="#2-3-搭建Gitlab平台" class="headerlink" title="2.3 搭建Gitlab平台"></a>2.3 搭建Gitlab平台</h3><h4 id="2-3-1-搭建Gitlab平台"><a href="#2-3-1-搭建Gitlab平台" class="headerlink" title="2.3.1 搭建Gitlab平台"></a>2.3.1 搭建Gitlab平台</h4><h5 id="2-3-1-1-安装-Gitlab-需要的组件"><a href="#2-3-1-1-安装-Gitlab-需要的组件" class="headerlink" title="2.3.1.1 安装 Gitlab 需要的组件"></a>2.3.1.1 安装 Gitlab 需要的组件</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@Devops ~]<span class="comment"># yum install curl policycoreutils-python openssh-server opensshclients postfix -y #安装一些官方依赖包</span></span><br><span class="line">[root@Devops ~]<span class="comment"># systemctl enable postfix &amp;&amp; systemctl start postfix #默认，使用Postfix发送邮件</span></span><br><span class="line">[root@Devops ~]<span class="comment"># iptables -F #清空规则</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#注意：</span></span><br><span class="line">systemctl stop firewalld &amp;&amp; systemctl <span class="built_in">disable</span> firewalld (这里，我之前初始环境已经关闭了防火墙了)</span><br><span class="line"><span class="comment">#如果禁止了防火墙，就不用执行下面两条命令：</span></span><br><span class="line">firewall-cmd --permanent --add-service=http</span><br><span class="line">systemctl reload firewalld</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-3-1-2-安装-gitlab"><a href="#2-3-1-2-安装-gitlab" class="headerlink" title="2.3.1.2 安装 gitlab"></a>2.3.1.2 安装 gitlab</h5><p>下载 gitlab 的两种方法：<strong>推荐使用离线安装方式！！！</strong></p>
+<p>==方法 1：使用 yum 下载太慢。直接使用迅雷下载以下链接==</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el7/gitlab-ce-13.9.3-ce.0.el7.x86_64.rpm</span><br><span class="line">上传到 gitlab-ce-13.9.3-ce.0.el7.x86_64.rpm 到 linux 系统上</span><br><span class="line">[root@Devops ~]<span class="comment"># rpm -ivh gitlab-ce-13.9.3-ce.0.el7.x86_64.rpm #安装</span></span><br></pre></td></tr></table></figure>
+
+<p>出现如下提示表示gitlab已经安装成功了：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210513220428060.png" alt="image-20210513220428060"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210513220437883.png" alt="image-20210513220437883"></p>
+<p>方法 2：配置 yum 源，使用 yum 安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@Devops ~]<span class="comment"># yum install gitlab-ce -y #默认安装gitlab太慢，下面使用清华的源</span></span><br><span class="line"></span><br><span class="line">[root@Devops ~]<span class="comment"># cd /etc/yum.repos.d/</span></span><br><span class="line">[root@Devops yum.repos.d]<span class="comment"># vim gitlab-ce.repo #写入以下内容</span></span><br><span class="line">[gitlab-ce] </span><br><span class="line">name=gitlab-ce </span><br><span class="line">baseurl=http://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el7 </span><br><span class="line">repo_gpgcheck=0 </span><br><span class="line">gpgcheck=0 </span><br><span class="line">enabled=1 </span><br><span class="line">gpgkey=https://packages.gitlab.com/gpg.key</span><br><span class="line"></span><br><span class="line">[root@Devops ~]<span class="comment"># yum install gitlab-ce -y #注意，这个安装的一般代表是最新版本的gitlab</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>==说明==</p>
+<ul>
+<li>gitlab软件rpm包特别大：844M，问题：这么大的包，里面都装了些啥东西？</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gitlab集成：数据库(postsql)， nginx， redis， 监控(prometheus/grafna)  （相当于一个网站，用起来非常方便）</span><br><span class="line">[root@Devops ~]<span class="comment">#  ll -h gitlab-ce-13.9.3-ce.0.el7.x86_64.rpm </span></span><br><span class="line">-rw-r--r-- 1 root root 844M Apr 25 22:54 gitlab-ce-13.9.3-ce.0.el7.x86_64.rpm</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>GitLab更新周期特别快！！！(这种新型软件更新的特别快)</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el7/">https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el7/</a></p>
+<p><strong>(jenkins好像是一星期更新一次</strong>，这个gitlab一天有时都可以好几个版本–<strong>小版本更新</strong>)</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426071111366.png" alt="image-20210426071111366"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426071314120.png" alt="image-20210426071314120"></p>
+<h5 id="2-3-1-3-配置-gitlab-访问地址"><a href="#2-3-1-3-配置-gitlab-访问地址" class="headerlink" title="2.3.1.3 配置 gitlab 访问地址"></a>2.3.1.3 配置 gitlab 访问地址</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">默认配置已经够我们使用了，因此这里只需要改下地址:[root@Devops ~]<span class="comment"># vim /etc/gitlab/gitlab.rb #修改 gitlab 外部访问地址改：32 external_url &#x27;http://gitlab.example.com&#x27;为：32 external_url &#x27;http://172.29.9.10&#x27; # 这个是你本次搭建gitlan的虚机ip注：这里必须修改，不然后后期访问时，用户到地址是：http://gitlab.example.com/xxxx ，根本不能访问。 修改后获得是： http://172.29.9.10/xxxx注意：后期可以更改数据库类型，但是一般情况下都够你们公司研发使用了；（一般常听见对apache/nginx优化，但很少听到对git-lab优化，没必要。）</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="2-3-1-4-应用新配好的配置并重启-GitLab"><a href="#2-3-1-4-应用新配好的配置并重启-GitLab" class="headerlink" title="2.3.1.4 应用新配好的配置并重启 GitLab"></a>2.3.1.4 应用新配好的配置并重启 GitLab</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@Devops ~]<span class="comment"># gitlab-ctl reconfigure #重新配置应用程序。注意：修改了 gitlab 服务配置文件后，都需要执行一下这个命令。让各个服务的配置文件，重新加载一下配置文件。这里等个 2 分钟左右。 ==&gt; 这个过程需要耗时点，耐心等待就好！</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>启动成功：<code>哈哈，一条命令干了这么多服务。</code></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210513224456560.png" alt="image-20210513224456560"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210513224431058.png" alt="image-20210513224431058"></p>
+<ul>
+<li>查看gitlab服务状态</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@Devops ~]<span class="comment"># gitlab-ctl status #可以使用 gitlab-ctl 管理 gitlab，例如查看 gitlab状态：</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210513224642182.png" alt="image-20210513224642182"></p>
+<ul>
+<li><strong>默认使用 nginx 作为 web 服务器</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@Devops ~]<span class="comment"># netstat -antup|grep 80</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210513224911591.png" alt="image-20210513224911591"></p>
+<ul>
+<li>注：如果后期 web 界面访问时，总报 502，该如何解决？=&gt;<strong>可以尝试清除防护期爱那个规则</strong>。(<strong>另外内存要大于 4G，不然后内存不足，也报 502,502属于内部错误</strong>)</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426074751889.png" alt="image-20210426074751889"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@Devops ~]<span class="comment"># iptables -F # 清空规则</span></span><br><span class="line">[root@Devops ~]<span class="comment"># free -mh # 已经使用 4G 以上内存</span></span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:           7.1G        4.7G        496M        117M        2.0G        2.0G</span><br><span class="line">Swap:          2.0G        520K        2.0G</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-3-1-5-登录-gitlab"><a href="#2-3-1-5-登录-gitlab" class="headerlink" title="2.3.1.5 登录 gitlab"></a>2.3.1.5 登录 gitlab</h5><p><a target="_blank" rel="noopener" href="http://172.29.9.10/">http://172.29.9.10</a><br>默认为root用户，第一次登录 gitlab，需要为 root 用户修改密码，<strong>root 用户也是 gitlab 的超级管理员</strong>，输入新密码：xuegod.cn ，密码需要复杂些，才可以的。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426074428357.png" alt="image-20210426074428357"></p>
+<p>如果密码太简单，将报错：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426075114025.png" alt="image-20210426075114025"></p>
+<p>改成密码后， 登录一下：<br>使用 root 用户和刚才创建的密码登录 gitlab：<br>登录： <a target="_blank" rel="noopener" href="http://172.29.9.10/">http://172.29.9.10/</a>  用户名： root 密码;     xuegod.cn</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426075043341.png" alt="image-20210426075043341"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426075059615.png" alt="image-20210426075059615"></p>
+<p>到此，gitlab 搭建成功。</p>
+<h4 id="2-3-2-配置gitlab邮件服务和对gitlab平台汉化"><a href="#2-3-2-配置gitlab邮件服务和对gitlab平台汉化" class="headerlink" title="2.3.2 配置gitlab邮件服务和对gitlab平台汉化"></a>2.3.2 配置gitlab邮件服务和对gitlab平台汉化</h4><h5 id="2-3-2-1-对gitlab平台汉化"><a href="#2-3-2-1-对gitlab平台汉化" class="headerlink" title="2.3.2.1 对gitlab平台汉化"></a>2.3.2.1 对gitlab平台汉化</h5><p>最新版本中 gitlab 添加了语言功能，旧版本需要手工汉化，新版本只需修改配置即可。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426075944875.png" alt="image-20210426075944875"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426080028432.png" alt="image-20210426080028432"></p>
+<p>修改后刷新页面即可完成汉化：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426080109228.png" alt="image-20210426080109228"></p>
+<h5 id="2-3-2-2-配置gitlab邮件服务"><a href="#2-3-2-2-配置gitlab邮件服务" class="headerlink" title="2.3.2.2  配置gitlab邮件服务"></a>2.3.2.2  配置gitlab邮件服务</h5><p>本次采用网易的163邮箱作为测试使用：</p>
+<p><a target="_blank" rel="noopener" href="https://mail.163.com/">https://mail.163.com/</a></p>
+<h6 id="2-3-2-2-1-开启邮箱的-SMTP-服务"><a href="#2-3-2-2-1-开启邮箱的-SMTP-服务" class="headerlink" title="2.3.2.2.1 开启邮箱的 SMTP 服务"></a>2.3.2.2.1 开启邮箱的 SMTP 服务</h6><p>设置–&gt;POP3/ smtp–&gt;开启一下，开启后，返回授权码。保存好授权码。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426194431084.png" alt="image-20210426194431084"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426194826980.png" alt="image-20210426194826980"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210514055915365.png" alt="image-20210514055915365"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426195114538.png" alt="image-20210426195114538"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426195146400.png" alt="image-20210426195146400"></p>
+<h6 id="2-3-2-2-2-编辑gitlab配置文件，配置-STMP-邮件发送服务"><a href="#2-3-2-2-2-编辑gitlab配置文件，配置-STMP-邮件发送服务" class="headerlink" title="2.3.2.2.2 编辑gitlab配置文件，配置 STMP 邮件发送服务"></a>2.3.2.2.2 编辑gitlab配置文件，配置 STMP 邮件发送服务</h6><p>编辑/etc/gitlab/gitlab.rb 文件，配置 STMP 邮件发送服务。前提你的邮件已经开通stmp/pop3 收发功能。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@Devops ~]<span class="comment"># vim /etc/gitlab/gitlab.rb #在 89 行后，插入以下内容：gitlab_rails[&#x27;smtp_enable&#x27;] = truegitlab_rails[&#x27;smtp_address&#x27;] = &quot;smtp.163.com&quot;gitlab_rails[&#x27;smtp_port&#x27;] = 465gitlab_rails[&#x27;smtp_user_name&#x27;] = &quot;jianmingbasic@163.com&quot;gitlab_rails[&#x27;smtp_password&#x27;] = &quot;自己邮箱授权码，不是邮箱帐号的密码&quot;gitlab_rails[&#x27;smtp_domain&#x27;] = &quot;163.com&quot;gitlab_rails[&#x27;smtp_authentication&#x27;] = &quot;login&quot;gitlab_rails[&#x27;smtp_enable_starttls_auto&#x27;] = truegitlab_rails[&#x27;smtp_tls&#x27;] = truegitlab_rails[&#x27;gitlab_email_from&#x27;] = &#x27;jianmingbasic@163.com&#x27;我本次写的代码：gitlab_rails[&#x27;smtp_enable&#x27;] = truegitlab_rails[&#x27;smtp_address&#x27;] = &quot;smtp.163.com&quot;gitlab_rails[&#x27;smtp_port&#x27;] = 465gitlab_rails[&#x27;smtp_user_name&#x27;] = &quot;onexlforyou@163.com&quot;gitlab_rails[&#x27;smtp_password&#x27;] = &quot;ONA……BT&quot;  # 我这里省略，请填写你自己的授权码gitlab_rails[&#x27;smtp_domain&#x27;] = &quot;163.com&quot;gitlab_rails[&#x27;smtp_authentication&#x27;] = &quot;login&quot;gitlab_rails[&#x27;smtp_enable_starttls_auto&#x27;] = truegitlab_rails[&#x27;smtp_tls&#x27;] = truegitlab_rails[&#x27;gitlab_email_from&#x27;] = &#x27;onexlforyou@163.com&#x27;# 注意：如果是163邮箱的话，这里就不能写163邮箱账号密码，需要写上授权码；# 但如果是你公司邮箱的话，这里就写上邮箱密码即可，因为公司里一般不会用到授权码的；</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>默认配置如下：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426195537679.png" alt="image-20210426195537679"></p>
+<p>自己本次配置：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210514060433137.png" alt="image-20210514060433137"></p>
+<p>重新配置 gitlab：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@GitLab ~]<span class="comment"># gitlab-ctl reconfigure</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210514060647325.png" alt="image-20210514060647325"></p>
+<ul>
+<li>注意：问下：smtp的端口是465吗？</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210514060717216.png" alt="image-20210514060717216"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@Devops ~]<span class="comment"># vim /etc/services</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426200125806.png" alt="image-20210426200125806"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">=&gt; 因为这里`gitlab_rails[<span class="string">&#x27;smtp_tls&#x27;</span>] = <span class="literal">true</span>`,我们走的是加密的邮件通信,别看是在web登录的，邮件有自己的协议--smtp(简单网络传输协议)，监听的是465端口；而https是监听的443端口；</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="2-3-2-2-3-通过命令行测试邮件是否发送成功"><a href="#2-3-2-2-3-通过命令行测试邮件是否发送成功" class="headerlink" title="2.3.2.2.3 通过命令行测试邮件是否发送成功"></a>2.3.2.2.3 通过命令行测试邮件是否发送成功</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@Devops ~]<span class="comment"># gitlab-rails console #稍等几秒到十几秒，然后出现脚本输入区域Loading production environment (Rails 4.2.8)irb(main):001:0&gt; #这是提示符然后再输入测试脚本：irb(main):001:0&gt; Notify.test_email(&#x27;onexlforyou@163.com&#x27;, &#x27;邮件主题 Message Subject&#x27;, &#x27;邮件正文 Message Body&#x27;).deliver_now注：脚本格式为：Notify.test_email(&#x27;接收方邮件地址&#x27;,&#x27;邮件主题&#x27;,&#x27;邮件内容&#x27;).deliver_now</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426201912223.png" alt="image-20210426201912223"></p>
+<p>查看邮件：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426202018859.png" alt="image-20210426202018859"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210514061505854.png" alt="image-20210514061505854"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这种方法很常见，包括我们做那种邮件报警的，都可以拿它来做；或者收取一些通知；</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-3-gitlab日常使用方法"><a href="#2-3-3-gitlab日常使用方法" class="headerlink" title="2.3.3 gitlab日常使用方法"></a>2.3.3 gitlab日常使用方法</h4><h5 id="2-3-3-1-新建项目"><a href="#2-3-3-1-新建项目" class="headerlink" title="2.3.3.1 新建项目"></a>2.3.3.1 新建项目</h5><ul>
+<li>新建项目前，先创建项目所在的组（也就是说这个项目文件是保存在哪个组里）</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426230406157.png" alt="image-20210426230406157"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">群组名称：xuegod组描述内容：xuegod web 开发组每一个项目都要属于一个群组；每一个组可以有多个项目；</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426230641871.png" alt="image-20210426230641871"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426231201347.png" alt="image-20210426231201347"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426231226347.png" alt="image-20210426231226347"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426231254425.png" alt="image-20210426231254425"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210514062522153.png" alt="image-20210514062522153"></p>
+<ul>
+<li>选择 Create New Projcet ，然后在输入项目名称，同时在 namespace 里选择刚才创建的组</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">创建项目：xuegod-web ，项目描述： www.xuegod.cn web 代码</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426231804245.png" alt="image-20210426231804245"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426231825460.png" alt="image-20210426231825460"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426231953168.png" alt="image-20210426231953168"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426232008141.png" alt="image-20210426232008141"></p>
+<p>注：这里只能选择私有的。因为之前 xuegod 群组已经指定了私有权限。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426232041814.png" alt="image-20210426232041814"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426232312693.png" alt="image-20210426232312693"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426233247933.png" alt="image-20210426233247933"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://172.29.9.10/xuegod/xuegod-web.gitgit地址     /群组名     /项目名</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-3-3-2-创建用户"><a href="#2-3-3-2-创建用户" class="headerlink" title="2.3.3.2 创建用户"></a>2.3.3.2 创建用户</h5><ol>
+<li>管理中心-用户-新建用户</li>
+</ol>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426235022259.png" alt="image-20210426235022259"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2.名称：相当于昵称； Username 是登录用户名，一般可以设置成邮箱的前缀，Email 为公司邮箱。角色设置为管理员黄岗onexlforyouonexlforyou@163.com</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426235205768.png" alt="image-20210426235205768"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426235225367.png" alt="image-20210426235225367"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426235241650.png" alt="image-20210426235241650"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426235317341.png" alt="image-20210426235317341"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426235334322.png" alt="image-20210426235334322"></p>
+<ul>
+<li>注意：将用户添加到群组</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这里，我是管理员用户，就不用加到其他群组中去；但如果刚创建的是一个普通用户，就需要加到相应的群组里面才行；</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427055404293.png" alt="image-20210427055404293"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427055631686.png" alt="image-20210427055631686"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427055752185.png" alt="image-20210427055752185"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427060015524.png" alt="image-20210427060015524"></p>
+<h5 id="2-3-3-3-重置新创建用户的密码"><a href="#2-3-3-3-重置新创建用户的密码" class="headerlink" title="2.3.3.3 重置新创建用户的密码"></a>2.3.3.3 重置新创建用户的密码</h5><p>登录邮件：<a href="mailto:&#111;&#110;&#x65;&#120;&#x6c;&#102;&#x6f;&#x72;&#x79;&#x6f;&#x75;&#64;&#49;&#x36;&#51;&#46;&#99;&#111;&#x6d;">&#111;&#110;&#x65;&#120;&#x6c;&#102;&#x6f;&#x72;&#x79;&#x6f;&#x75;&#64;&#49;&#x36;&#51;&#46;&#99;&#111;&#x6d;</a></p>
+<p>注意，此时，你就会收到一份<code>Access to the xuegod group was granted</code>邮件了：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427060755897.png" alt="image-20210427060755897"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427060828766.png" alt="image-20210427060828766"></p>
+<p>同时记得修改刚创建用户onexlforyou的密码：本次密码设定为<code>xuegod.cn</code></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427060653391.png" alt="image-20210427060653391"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427060929704.png" alt="image-20210427060929704"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427060921304.png" alt="image-20210427060921304"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">点开设置自己的初始密码：密码必须 8 位以一上。我的密码是： xuegod.cn</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427061003839.png" alt="image-20210427061003839"></p>
+<p>生成密码后，登录：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427061250337.png" alt="image-20210427061250337"></p>
+<p>成功后就会出现如下界面：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427061448535.png" alt="image-20210427061448535"></p>
+<h5 id="2-3-3-4-在项目中添加一个文件"><a href="#2-3-3-4-在项目中添加一个文件" class="headerlink" title="2.3.3.4 在项目中添加一个文件"></a>2.3.3.4 在项目中添加一个文件</h5><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427061923618.png" alt="image-20210427061923618"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427062012922.png" alt="image-20210427062012922"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">添加文件：index.html http://172.29.9.10/xuegod/xuegod-web注意，这这里就不是v1/v2来区分版本了，而是通过这里项目ID来区分；</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427062240728.png" alt="image-20210427062240728"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427062308282.png" alt="image-20210427062308282"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427062333989.png" alt="image-20210427062333989"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427062628300.png" alt="image-20210427062628300"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427062755172.png" alt="image-20210427062755172"></p>
+<p>提交完成后，再次重新打开自己的项目就可以看到自己的提交记录了：这里就没有什么版本号了，主要还是根据下面这个id来区分的。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427063008840.png" alt="image-20210427063008840"></p>
+<h5 id="2-3-3-5-管理-gitlab-服务及gitlab常用配置文件目录"><a href="#2-3-3-5-管理-gitlab-服务及gitlab常用配置文件目录" class="headerlink" title="2.3.3.5 管理 gitlab 服务及gitlab常用配置文件目录"></a>2.3.3.5 管理 gitlab 服务及gitlab常用配置文件目录</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 管理 gitlab 服务关闭 gitlab： # gitlab-ctl stop启动 gitlab： # gitlab-ctl start重启 gitlab： # gitlab-ctl restart# gitlab常用配置文件目录gitlab 主配置文件：/etc/gitlab/gitlab.rb //可以自定义一些邮件服务等日志地址：/var/log/gitlab/ // 对应各服务服务地址：/var/opt/gitlab/ // 对应各服务的主目录仓库地址：/var/opt/gitlab/git-data //记录项目仓库等提交信息</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="2-3-3-6-如何更改GitLab平台导航主题、语法高亮主题"><a href="#2-3-3-6-如何更改GitLab平台导航主题、语法高亮主题" class="headerlink" title="2.3.3.6 如何更改GitLab平台导航主题、语法高亮主题"></a>2.3.3.6 如何更改GitLab平台导航主题、语法高亮主题</h5><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426075944875-1620946353102.png" alt="image-20210426075944875"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210517073900697.png" alt="image-20210517073900697"></p>
+<h4 id="2-3-4-git-客户端使用技巧"><a href="#2-3-4-git-客户端使用技巧" class="headerlink" title="2.3.4 git 客户端使用技巧"></a>2.3.4 git 客户端使用技巧</h4><h5 id="2-3-4-1-安装-git-并-clone-代码"><a href="#2-3-4-1-安装-git-并-clone-代码" class="headerlink" title="2.3.4.1 安装 git 并 clone 代码"></a>2.3.4.1 安装 git 并 clone 代码</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">本次前安装 gitlab软件是应该是已经安装了git了，再次yum安装git的话就会更新git版本；yum install -y git</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427063711901.png" alt="image-20210427063711901"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427063740718.png" alt="image-20210427063740718"></p>
+<ul>
+<li>注意：项目刚开始这里已经列出了相关使用git的方法了：</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210426234428828.png" alt="image-20210426234428828"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Git 全局设置git config --global user.name &quot;Administrator&quot;git config --global user.email &quot;admin@example.com&quot;# 创建一个新仓库git clone http://172.29.9.10/root/xuegod-web.gitcd xuegod-webtouch README.mdgit add README.mdgit commit -m &quot;add README&quot;git push -u origin master# 推送现有文件夹cd existing_foldergit initgit remote add origin http://172.29.9.10/root/xuegod-web.gitgit add .git commit -m &quot;Initial commit&quot;git push -u origin master# 推送现有的 Git 仓库cd existing_repogit remote rename origin old-origingit remote add origin http://172.29.9.10/root/xuegod-web.gitgit push -u origin --allgit push -u origin --tags</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>下载地址，可以从这里获得：</li>
+</ul>
+<p>我们在项目<code>克隆</code>那里赋值一下链接：<code>http://172.29.9.10/xuegod/xuegod-web.git</code></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427064459554.png" alt="image-20210427064459554"></p>
+<p>输入账号密码进行克隆仓库操作：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427064723379.png" alt="image-20210427064723379"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427064837939.png" alt="image-20210427064837939"></p>
+<h5 id="2-3-4-2-初次运行-Git-前的配置-设置签名"><a href="#2-3-4-2-初次运行-Git-前的配置-设置签名" class="headerlink" title="2.3.4.2 初次运行 Git 前的配置(设置签名)"></a>2.3.4.2 初次运行 Git 前的配置(设置签名)</h5><ul>
+<li>理论部分</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Git 全局设置git config --global user.name &quot;hg&quot;git config --global user.email &quot;2675263825@qq.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>Git跟踪谁修改了项目</strong>，哪怕参与项目开发的人只有一个。为此，Git需要知道你的用户名和电子邮件地址。你必须提供用户名，<strong>但可以使用虚构的username和电子邮件地址</strong>。</p>
+<p>​    如果你忘记了这一步，<strong>在你首次提交时，Git将提示你提供这些信息</strong>。(<strong>也就是说，这个步骤是必须的</strong>)。</p>
+<p>​    <strong>一般在新的系统上，我们都需要先配置下自己的 Git 工作环境</strong>。配置工作只需一次，以后升级时还<br>会沿用现在的配置。<br>​    第一个要配置的是你个人的用户名称和电子邮件地址。<strong>这两条配置很重要，每次 Git 提交时都会引</strong><br><strong>用这两条信息，说明是谁提交了更新，所以会随更新内容一起被永久纳入历史记录</strong>。<br>​    <strong>git 运行的环境变量有点像.bashrc</strong>，决定了 Git 在各个环节的具体工作方式和行为。这些变量可以<br>存放在以下两个的地方：</p>
+<p><strong>注意</strong>：实际工作中，只需要设置一个系统用户级别的签名就可以了，如果后续项目有另外需求的话，那么再设置下<code>项目级别签名</code>就可以了。</p>
+<ul>
+<li><p>形式</p>
+<p>用户名：tom<br>Email 地址：<a href="mailto:&#103;&#x6f;&#111;&#x64;&#77;&#111;&#x72;&#x6e;&#x69;&#x6e;&#x67;&#64;&#97;&#x74;&#103;&#x75;&#105;&#x67;&#x75;&#46;&#x63;&#111;&#x6d;">&#103;&#x6f;&#111;&#x64;&#77;&#111;&#x72;&#x6e;&#x69;&#x6e;&#x67;&#64;&#97;&#x74;&#103;&#x75;&#105;&#x67;&#x75;&#46;&#x63;&#111;&#x6d;</a> # <strong>邮箱名不存在都可以，只是为了区分开发人员而已；</strong></p>
+</li>
+<li><p>作用：区分不同开发人员的身份</p>
+</li>
+<li><p>辨析：<strong>这里设置的签名和登录远程库(代码托管中心)的账号、密码没有任何关系。</strong> </p>
+</li>
+<li><p>命令</p>
+<p>（1）项目级别/仓库级别：仅在当前本地库范围内有效 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config user.name <span class="string">&quot;tom_pro&quot;</span>git config user.email <span class="string">&quot;goodMorning_pro@atguigu.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>信息保存位置：./.git/config 文件</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210312073821807.png" alt="image-20210312073821807"></p>
+<p>（2）系统用户级别：~/.gitconfig 文件：<strong>用户目录下的配置文件只适用于该用户</strong>。</p>
+<p>​    当前项目.git 目录中的配置文件（也就是工作目录中的 .git/config 文件）：这里的配置仅仅针对<br>当前项目有效。<strong>每一个级别的配置都会覆盖上层的相同配置，所以 .git/config 里的配置会覆盖</strong><br><strong>~/.gitconfig 中的同名变量</strong>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;tom_glb&quot;</span>git config --global user.email <span class="string">&quot;goodMorning_glb@atguigu.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>信息保存位置：~/.gitconfig 文件</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210312074150516.png" alt="image-20210312074150516"></p>
+<p>==注意：级别优先级==</p>
+<p><strong>就近原则</strong>：项目级别优先于系统用户级别，二者都有时采用项目级别的签名</p>
+<p>如果只有系统用户级别的签名，就以系统用户级别的签名为准</p>
+<p>二者都没有不允许。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210312073732919.png" alt="image-20210312073732919"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210312074124806.png" alt="image-20210312074124806"></p>
+</li>
+<li><p>注意</p>
+</li>
+</ul>
+<p>如何修改项目或者系统级别的签名呢？=&gt;直接重新执行命令就可以的，原来信息会被直接覆盖的。</p>
+<ul>
+<li>本次配置部分</li>
+</ul>
+<p><strong>例：修改某个 git 项目下的环境变量</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@GitLab ~]<span class="comment"># cd xuegod-web/[root@GitLab xuegod-web]# ls -a.  ..  .git  index.html[root@GitLab xuegod-web]# cat .git/config #先查看一下，里面没有 user.name和 user.email[root@GitLab xuegod-web]# git config user.name &quot;hg&quot;[root@GitLab xuegod-web]# git config user.email &quot;onexlforyou@163.com&quot;[root@GitLab xuegod-web]# cat .git/config ……[user] #新增加了，以下内容	name = hg	mail = onexlforyou@163.com	同时这里设置下系统级签名：[root@GitLab xuegod-web]# git config --global user.name  &quot;hg&quot;[root@GitLab xuegod-web]# git config --global user.email  &quot;onexlforyou@163.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427074013851.png" alt="image-20210427074013851"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427074543261.png" alt="image-20210427074543261"></p>
+<h5 id="2-3-4-3-git-常用命令"><a href="#2-3-4-3-git-常用命令" class="headerlink" title="2.3.4.3 git 常用命令"></a>2.3.4.3 git 常用命令</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例：把修改过的 index.html 文件更新到主版本中[root@GitLab ~]<span class="comment"># cd xuegod-web/[root@GitLab xuegod-web]# echo &quot;bbs.xuegod.cn&quot; &gt;&gt; index.html [root@GitLab xuegod-web]# git add index.html #添加文件到暂存区[root@GitLab xuegod-web]# git commit -m &quot;add bbs&quot; #提交文件到工作区[master 9a2797b] add bbs 1 file changed, 1 insertion(+)</span></span><br></pre></td></tr></table></figure>
+
+<p>此时代码还未同步到git-lab端，我们可以在git-lab端刷新验证：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427194832269.png" alt="image-20210427194832269"></p>
+<p>此时，还需要执行一下<code>git push</code>命令才行：</p>
+<p>这里弹出很多log，可通过执行提示的命令，再次执行git push就不会报log了：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427194953267.png" alt="image-20210427194953267"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@xuegod63 xuegod-web]<span class="comment"># git push #上传到 git 服务器origin [ˈɒrɪdʒɪn] 起源，根Username for &#x27;http://172.29.9.10&#x27;: jianmingbasicPassword for &#x27;http://jianmingbasic@172.29.9.10&#x27;: xuegod.cn[root@xuegod63 xuegod-web]# git config --global push.default simple #不再显示本信息并从现在开始采用新的使用习惯登录 gitlab http://172.29.9.10/ 用户名：onexlforyou 密码： xuegod.cn </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427195320363.png" alt="image-20210427195320363"></p>
+<p>此时再次到git-lab端刷新代码，发现代码已经改变了：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427195611626.png" alt="image-20210427195611626"></p>
+<p>后续的测试git代码部分：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427200520658.png" alt="image-20210427200520658"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427200532275.png" alt="image-20210427200532275"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210427200634226.png" alt="image-20210427200634226"></p>
+<p>注意：</p>
+<p>注：关机后，创建一个虚拟机快照</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210428053933050.png" alt="image-20210428053933050"></p>
+<h3 id="2-4-搭建Jenkins实现持续集成并增加ssh公钥直接下载代"><a href="#2-4-搭建Jenkins实现持续集成并增加ssh公钥直接下载代" class="headerlink" title="2.4 搭建Jenkins实现持续集成并增加ssh公钥直接下载代"></a>2.4 搭建Jenkins实现持续集成并增加ssh公钥直接下载代</h3><h4 id="2-4-1-安装-JDK1-8"><a href="#2-4-1-安装-JDK1-8" class="headerlink" title="2.4.1 安装 JDK1.8"></a>2.4.1 安装 JDK1.8</h4><p>​    Jenkins 是 Java 编写的，所以需要先安装 JDK，这里采用 yum 安装，如果对版本有需求，可以直<br>接在 Oracle 官网下载 JDK。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@GitLab ~]<span class="comment"># yum install -y java-1.8.0-openjdk #光盘镜像中有，也可以 rpm 直接安装</span></span><br></pre></td></tr></table></figure>
+
+<p>==问题==：我这里采用yum安装的java-1.8.0-openjdk和去官网下载的8.0 jdk有什么不一样的地方吗？<br>jdk有一些版权问题；<br>类似：google公司的安卓手机 &amp; oracle 之间的版权纠纷 =&gt; 采用开源的；</p>
+<h4 id="2-4-2-安装-jenkins"><a href="#2-4-2-安装-jenkins" class="headerlink" title="2.4.2 安装 jenkins"></a>2.4.2 安装 jenkins</h4><p>官方下载地址：<a target="_blank" rel="noopener" href="https://jenkins.io/zh/download/">https://jenkins.io/zh/download/</a></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210428060924349.png" alt="image-20210428060924349"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210428060954928.png" alt="image-20210428060954928"></p>
+<p>方法 1：直接上传 jenkins-2.277.3-1.1.noarch.rpm 到 linux 上(本次采用这种方式安装)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@GitLab ~]<span class="comment"># rpm -ivh jenkins-2.277.3-1.1.noarch.rpm</span></span><br></pre></td></tr></table></figure>
+
+<p>#jenkins清华源插件下载地址：<br><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/jenkins/redhat-stable/">https://mirrors.tuna.tsinghua.edu.cn/jenkins/redhat-stable/</a></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210514205213857.png" alt="image-20210514205213857"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/20210428212328.png" alt="image-20210428061933430"></p>
+<p>方法 2：在线安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@GitLab ~]<span class="comment"># wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins.io/redhat/jenkins.repo [root@GitLab yum.repos.d]# rpm --import http://pkg.jenkins.io/redhat/jenkins.io.key[root@GitLab yum.repos.d]# yum install -y jenkins #安装 jenkins,这个默认是安装最新版本的。</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>注意</li>
+</ul>
+<p><strong>新版 jenkins 的服务端口为 8080</strong>，为了不和 GitLab 的服务端口相冲突，修改 Jenkins 的默认端口<br>8080 为 198:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@GitLab jenkins]<span class="comment"># netstat -antup|grep 8080</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429060740566.png" alt="image-20210429060740566"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@GitLab yum.repos.d]<span class="comment"># vim /etc/sysconfig/jenkins改：29 JENKINS_USER=&quot;jenkins&quot; 为：29 JENKINS_USER=&quot;root&quot; #以 root改：56 JENKINS_PORT=&quot;8080&quot;为：56 JENKINS_PORT=&quot; 198 &quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>开启jenkins服务并设置为开机启动</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@GitLab ~]<span class="comment"># systemctl restart  jenkins [root@GitLab ~]# systemctl enable  jenkins</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429061500374.png" alt="image-20210429061500374"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429061509010.png" alt="image-20210429061509010"></p>
+<ul>
+<li>修改 jenkins 默认源</li>
+</ul>
+<p>在 web 界面访问 jenkins 时，默认会到国外的网站下载 <strong>hudson.model.UpdateCenter.xml 文 件</strong>。而这个文件在中国下载时很慢，需要换成清华的源。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@GitLab ~]<span class="comment"># sed -i &#x27;s/https:\/\/updates.jenkins.io\/update-center.json/https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins\/updates\/update-center.json/g&#x27; /var/lib/jenkins/hudson.model.UpdateCenter.xml</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429062755432.png" alt="image-20210429062755432"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429062805621.png" alt="image-20210429062805621"></p>
+<h4 id="2-4-3-访问-Jenkins-并安装相关插件"><a href="#2-4-3-访问-Jenkins-并安装相关插件" class="headerlink" title="2.4.3  访问 Jenkins 并安装相关插件"></a>2.4.3  访问 Jenkins 并安装相关插件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@GitLab ~]<span class="comment"># iptables -F # 要清空防火规则，还要关闭 selinux</span></span><br><span class="line">[root@GitLab ~]<span class="comment"># getenforce </span></span><br><span class="line">Disabled</span><br></pre></td></tr></table></figure>
+
+<p>开始正常使用：<a target="_blank" rel="noopener" href="http://172.29.9.10:198/">http://172.29.9.10:198</a> #打开后，<strong>先不要进行密码配置操作，此时还需要做一些其他修改：</strong></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429063303063.png" alt="image-20210429063303063"></p>
+<p>​    我们前面虽然修改了默认从清华下载 <strong>default.json 文件</strong>，但是文件内容和官方是没有区别的，联网<br>检测是通过 google.com 进行检测，所有的插件地址也都是指向官方源，国内源虽然提供了default.json 下载，但是并不能修改源中的任何配置。我们替换 default.json 中的国外地址为清华的地<br>址，这样就可以通过清华下载所有插件了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@GitLab ~]<span class="comment"># cp /var/lib/jenkins/updates/default.json&#123;,.bak&#125;修改插件地址：[root@GitLab ~]# sed -i s&quot;/https:\/\/updates.jenkins.io\/download/https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins/g&quot; /var/lib/jenkins/updates/default.json修改联网检测地址：[root@GitLab ~]# sed -i &#x27;s/http:\/\/www.google.com/https:\/\/www.baidu.com/g&#x27; /var/lib/jenkins/updates/default.json修改后重启生效[root@GitLab ~]# systemctl restart jenkins</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>注意：主要是替换如下2和value值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;connectionCheckUrl&quot;</span>:<span class="string">&quot;http://www.google.com/&quot;</span><span class="string">&quot;url&quot;</span>:<span class="string">&quot;https://updates.jenkins.io/download/war/2.293/jenkins.war&quot;</span>替换为：https://mirrors.tuna.tsinghua.edu.cn/jenkins <span class="comment">#插件地址https://www.baidu.com #联网检测地址</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515082940815.png" alt="image-20210515082940815"></p>
+<p>替换前：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515071405515.png" alt="image-20210515071405515"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515071429991.png" alt="image-20210515071429991"></p>
+<p>替换后：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515082532696.png" alt="image-20210515082532696"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515082549708.png" alt="image-20210515082549708"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515082832814.png" alt="image-20210515082832814"></p>
+<p>为了安全考虑，首先需要解锁 Jenkins</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@GitLab ~]<span class="comment"># cat /var/lib/jenkins/secrets/initialAdminPassword #查看初始化密码文件。b6c8041665204d1f9dcf8b20416568e8</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429072315584.png" alt="image-20210429072315584"></p>
+<h5 id="2-4-3-1-在线安装插件"><a href="#2-4-3-1-在线安装插件" class="headerlink" title="2.4.3.1 在线安装插件"></a>2.4.3.1 在线安装插件</h5><p>选择需要安装的插件：<br>选择默认即可，会安装通用的社区插件，剩下的可以在使用的时候再进行安装。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429072411819.png" alt="image-20210429072411819"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429072425420-1619652265982.png" alt="image-20210429072425420"></p>
+<p>==这里需要注意了：==</p>
+<p>关于安装jenkins插件失败的问题：</p>
+<p>**前面已经替换了”插件地址”和”联网检测地址”**，但是在下载插件的时候，依然会有一些包安装失败(遇到这个情况的概率非常大)。  (这里可以不修改插件地址，直接连vpn，但效果应该是一样的)</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515083559891.png" alt="image-20210515083559891"></p>
+<p>再次点击重试，还是无法安装上述插件：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515083933603.png" alt="image-20210515083933603"></p>
+<p>经过自己多次尝试，发现是需要一些依赖包，才可以安装上述插件：(<strong>后续可通过在线升级jenkins版本进行安装依赖包，进而上述安装失败的插件也会被一起安装的</strong>)</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515084100030.png" alt="image-20210515084100030"></p>
+<p>如果点重试，还是失败，那就点 “继续”，等安装成后，再手动下载插件进行安装。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429075320521.png" alt="image-20210429075320521"></p>
+<p>创建管理员用户：admin 密码： 123456 全名： hg 邮箱：<a href="mailto:&#111;&#x6e;&#x65;&#x78;&#108;&#x66;&#111;&#x72;&#x79;&#x6f;&#x75;&#x40;&#x31;&#x36;&#51;&#46;&#x63;&#x6f;&#109;">&#111;&#x6e;&#x65;&#x78;&#108;&#x66;&#111;&#x72;&#x79;&#x6f;&#x75;&#x40;&#x31;&#x36;&#51;&#46;&#x63;&#x6f;&#109;</a></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429074107231.png" alt="image-20210429074107231"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429074324822.png" alt="image-20210429074324822"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429074351788.png" alt="image-20210429074351788"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429074401818.png" alt="image-20210429074401818"></p>
+<p>登录到jenkins界面：<strong>接下来我们解决因依赖包问题导致jenkins某些插件安装失败的问题</strong>。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429075407722.png" alt="image-20210429075407722"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515085125182.png" alt="image-20210515085125182"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515085242957.png" alt="image-20210515085242957"></p>
+<p>由这个提示可以看出，<strong>自己目前的jenkins版本(jenkins-2.277.3-1.1)太老了，不支持某些依赖包，因此，这里需要升级jenkins版本</strong>：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515085315062.png" alt="image-20210515085315062"></p>
+<p>点击<code>或自动升级</code>：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515085439476.png" alt="image-20210515085439476"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515085529552.png" alt="image-20210515085529552"></p>
+<p>第一次下载失败：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515085720743.png" alt="image-20210515085720743"></p>
+<p>打开vpn后，再次尝试：升级成功！</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515085753206.png" alt="image-20210515085753206"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515085836922.png" alt="image-20210515085836922"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515085844098.png" alt="image-20210515085844098"></p>
+<p>如下代表升级jenkins版本成功：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515090104269.png" alt="image-20210515090104269"></p>
+<p>此时发现原来安装失败的插件，现在全部已经安装成功了：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515083559891.png" alt="image-20210515083559891"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515090240704.png" alt="image-20210515090240704"></p>
+<p>到此 jenkins 安装成功。<br>注：关机后，创建一个虚拟机快照。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515090357187.png" alt="image-20210515090357187"></p>
+<h5 id="2-4-3-2-手动安装相关插件"><a href="#2-4-3-2-手动安装相关插件" class="headerlink" title="2.4.3.2 手动安装相关插件"></a>2.4.3.2 手动安装相关插件</h5><p>==方法1==</p>
+<p>如果在线安装插件失败了，或是无网环境下想安装插件，可以选择手动安装。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210510073537484.png" alt="image-20210510073537484"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210429073844429-1619653125181.png" alt="image-20210429073844429"></p>
+<p>这里不用管，点继续，等安装成功后，我们再手动安装插件。</p>
+<p>在这里找到自己要下载的插件的名字和版本号：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210510074406619.png" alt="image-20210510074406619"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210510074418907.png" alt="image-20210510074418907"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210510074459346.png" alt="image-20210510074459346"></p>
+<p>在这里下载：</p>
+<p>在这里下载：<br>插件下载地址：<br><a target="_blank" rel="noopener" href="http://mirrors.tuna.tsinghua.edu.cn/jenkins/plugins/">http://mirrors.tuna.tsinghua.edu.cn/jenkins/plugins/</a><br>或<br><a target="_blank" rel="noopener" href="http://updates.jenkins-ci.org/download/plugins/">http://updates.jenkins-ci.org/download/plugins/</a> </p>
+<p>比如我要下载：gitlab-api，版本是：1.0.6<br>下载： <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/jenkins/plugins/gitlab-api/1.0.6/">https://mirrors.tuna.tsinghua.edu.cn/jenkins/plugins/gitlab-api/1.0.6/</a><br>#在有网的环境下，把自己需要的插件下载好，然后再从本地上传。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511061218419.png" alt="image-20210511061218419"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511061230780.png" alt="image-20210511061230780"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511061240535.png" alt="image-20210511061240535"></p>
+<ul>
+<li>自己测试过程：现在测试手动安装插件效果</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511060639603.png" alt="image-20210511060639603"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511060713073.png" alt="image-20210511060713073"></p>
+<p>这里可以直接安装成功的：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511060825360.png" alt="image-20210511060825360"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511060836972.png" alt="image-20210511060836972"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511061126869.png" alt="image-20210511061126869"></p>
+<p>这里手动卸载后，再次手动安装进行测试效果：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511061831673.png" alt="image-20210511061831673"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511061844579.png" alt="image-20210511061844579"></p>
+<p>呃呃，这个状态怎么持续好久。。。打算手动命令重启下jenkins。。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511062106189.png" alt="image-20210511062106189"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511062124168.png" alt="image-20210511062124168"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511062145917.png" alt="image-20210511062145917"></p>
+<p>命令行手动重启jenkins后，gitlab-api插件就不见了：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511062254993.png" alt="image-20210511062254993"></p>
+<ul>
+<li>现在手动上传gitlab-api离线安装包</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511062343617.png" alt="image-20210511062343617"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511062439586.png" alt="image-20210511062439586"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511062514935.png" alt="image-20210511062514935"></p>
+<p>安装成功：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511062741804.png" alt="image-20210511062741804"></p>
+<p>==方法2：==</p>
+<p>也可以直接把一台安装好 jenkins 插件服务器的/var/lib/jenkins/plugins 目录下的文件<br>复制到新的 jenkins 中。</p>
+<p>实验环境：xuegod64 是一台已经安装好 jenkins 服务的服务器，xuegod63 因为网络的原因，没<br>有安装好插件。现在要把 xuegod64 上的插件安装到 xuegod63 上。</p>
+<ol>
+<li><p>将 xuegod64 上的插件打包<br>[root@xuegod64 ~]# cd /var/lib/jenkins<br>[root@xuegod64 jenkins]# <strong>tar czvf jenkins-2.150.2-plugins.tar.gz plugins</strong>/ #把安装好<br>的插件打包</p>
+</li>
+<li><p>将 xuegod64 上的 jenkins-2.150.2-plugins.tar.gz 上传到 xuegod63 的/root/目录下<br>[root@xuegod63 ~]# cd /var/lib/jenkins/<br>[root@xuegod63 ~]# <strong>rm -rf /var/lib/jenkins/plugins</strong><br>[root@xuegod63 ~]# tar zxvf jenkins-2.150.2-plugins.tar.gz -C /var/lib/jenkins/plugins/ #把插<br>件解出来<br>[root@xuegod63 ~]# /etc/init.d/jenkins restart </p>
+</li>
+</ol>
+<p>  注：记得重启 jenkins，这个非常重要，因为不重启，插件不会生效</p>
+<ul>
+<li>测试过程：</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511062840850.png" alt="image-20210511062840850"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511062900831.png" alt="image-20210511062900831"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511062940900.png" alt="image-20210511062940900"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511063209027.png" alt="image-20210511063209027"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511063314965.png" alt="image-20210511063314965"></p>
+<ul>
+<li>==注意：jenkins天天升级，因此生产环境中保留一份插件压缩包是非常有必要的==</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511063803658.png" alt="image-20210511063803658"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511063905156.png" alt="image-20210511063905156"></p>
+<p>例如：注意：这里的rancher1.x 和2.x插件是不兼容的，现在这里都没有1.x插件了：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511064432955.png" alt="image-20210511064432955"></p>
+<h4 id="2-4-4-配置-Jenkins-自动拉取-gitlab-中的代码"><a href="#2-4-4-配置-Jenkins-自动拉取-gitlab-中的代码" class="headerlink" title="2.4.4  配置 Jenkins 自动拉取 gitlab 中的代码"></a>2.4.4  配置 Jenkins 自动拉取 gitlab 中的代码</h4><h5 id="2-4-4-1-查看-GitLab-上创建的项目：xuegod-web"><a href="#2-4-4-1-查看-GitLab-上创建的项目：xuegod-web" class="headerlink" title="2.4.4.1 查看 GitLab 上创建的项目：xuegod-web"></a>2.4.4.1 查看 GitLab 上创建的项目：xuegod-web</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">登录 gitlab http://192.168.1.63/ 用户名： root 密码： xuegod.cn 登录 jenkins http://192.168.1.63:198/ 用户名： admin 密码： 123456</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>查看之前创建的 xuegod-web 项目：</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511071343896.png" alt="image-20210511071343896"></p>
+<ul>
+<li>导出 xuegod 项目</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab用户账号密码：onexlforyou/xuegod.c</span><br></pre></td></tr></table></figure>
+
+<p>注:可以导出项目代码，说明 gitlab 环境是正常的。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511071818838.png" alt="image-20210511071818838"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511072002115.png" alt="image-20210511072002115"></p>
+<h5 id="2-4-4-2-安装-Jenkins-插件"><a href="#2-4-4-2-安装-Jenkins-插件" class="headerlink" title="2.4.4.2 安装 Jenkins 插件"></a>2.4.4.2 安装 Jenkins 插件</h5><p><strong>安装以下插件</strong>：<br>Credentials Plugin（默认已经安装） #签名证书管理插件<br>Gitlab Plugin #拉取 gitlab 中的源代码<br>SSH Plugin #这个插件使用 SSH 协议远程执行 shell 命令。</p>
+<ul>
+<li>安装插件过程：<br>管理 jenkins–&gt;插件管理–&gt;选择你需要的</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511073151132.png" alt="image-20210511073151132"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511073202821.png" alt="image-20210511073202821"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511072456646.png" alt="image-20210511072456646"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511072547622.png" alt="image-20210511072547622"></p>
+<p>注：这个安装完成后重启 Jenkins，前的对勾，先不打上。<br>在可选插件中找：GitLab 插件 ：GitLab 和 Gitlab API 并安装<br><strong>GitLab 插件作用：该插件允许 GitLab 触发 Jenkins 构建并在 GitLab UI 中显示其结果</strong>。<br>选择等安装插件成功后，自动重启</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511072628168.png" alt="image-20210511072628168"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511072642185.png" alt="image-20210511072642185"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511072728096.png" alt="image-20210511072728096"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511072759550.png" alt="image-20210511072759550"></p>
+<p>等 1 分钟后，手动刷新一下，不需要一直等待，需要重新登录 jenkins，说明重启 jenkins 成功。</p>
+<h5 id="2-4-4-3-设置-gitlab-用户-root-可以通过-ssh-公钥直接下载代码"><a href="#2-4-4-3-设置-gitlab-用户-root-可以通过-ssh-公钥直接下载代码" class="headerlink" title="2.4.4.3 设置 gitlab 用户 root 可以通过 ssh 公钥直接下载代码"></a>2.4.4.3 设置 gitlab 用户 root 可以通过 ssh 公钥直接下载代码</h5><p>部署 key，让 root 用户可以不输入密码，获取 gitlab 上的源代码，该 key 是使用 git 下拉代码时<br>使用。</p>
+<p>在不设置ssh公钥时每次克隆代码都需要输入密码：（很不方面）</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511074036368.png" alt="image-20210511074036368"></p>
+<p>在gitlab上添加自己的ssh公钥：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511074137057.png" alt="image-20210511074137057"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511074209521.png" alt="image-20210511074209521"></p>
+<p>linux下生成你的公钥和私钥：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511073624164.png" alt="image-20210511073624164"></p>
+<p>带你看看私钥和公钥的庐山面目</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210517074116309.png" alt="image-20210517074116309"></p>
+<p>测试部署 key，发现可以不用用户名密码后直接获取代码：(将你的公钥贴在gitlab这里)</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210517074149615.png" alt="image-20210517074149615"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511074405729.png" alt="image-20210511074405729"></p>
+<ul>
+<li>测试</li>
+</ul>
+<p>注意：<strong>这里要使用git方式下载；且第一次输入需要输入yes，后续就不需要了；</strong></p>
+<p>#发现可以直接下载代码</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511074731323.png" alt="image-20210511074731323"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511074538797.png" alt="image-20210511074538797"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511074835925.png" alt="image-20210511074835925"></p>
+<h5 id="2-4-4-4-Jenkins-添加-git-用户-root-的私钥"><a href="#2-4-4-4-Jenkins-添加-git-用户-root-的私钥" class="headerlink" title="2.4.4.4 Jenkins 添加 git 用户 root 的私钥"></a>2.4.4.4 Jenkins 添加 git 用户 root 的私钥</h5><p>我们接下来需要完成的步骤：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511075244801.png" alt="image-20210511075244801"></p>
+<p>复制 GitLab 中~/.ssh/id_rsa 里面的私钥添加到 Jenkins（private key 选项）<br>[root@GitLab ~]# cat .ssh/id_rsa #查看刚才生的私钥<br>然后把私钥添加到 jenkins 的“凭据”</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511075628477.png" alt="image-20210511075628477"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511075730819.png" alt="image-20210511075730819"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511075745327.png" alt="image-20210511075745327"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511075905452.png" alt="image-20210511075905452"></p>
+<p>注：这里直接复制/root/.ssh/id_rsa 中的内容。<br> <strong>root 公钥在 gitlab，root 私钥在 jenkins，这样 jenkins 就可以直接拉取 gitlab 上的代码</strong></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511075919067.png" alt="image-20210511075919067"></p>
+<h5 id="2-4-4-5-配置jenkins自动拉取gitlab的代码"><a href="#2-4-4-5-配置jenkins自动拉取gitlab的代码" class="headerlink" title="2.4.4.5 配置jenkins自动拉取gitlab的代码"></a>2.4.4.5 配置jenkins自动拉取gitlab的代码</h5><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512061548651.png" alt="image-20210512061548651"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xuegod-web-test1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512061738988.png" alt="image-20210512061738988"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512061813246.png" alt="image-20210512061813246"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xuegod-web 网站代码提交</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512061954860.png" alt="image-20210512061954860"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512062234932.png" alt="image-20210512062234932"></p>
+<ul>
+<li>此时就可以在jenkins上拉取代码了，进行测试</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512062359397.png" alt="image-20210512062359397"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512062432855.png" alt="image-20210512062432855"></p>
+<p>你构建了几次，build history这里就会显示几次的：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512062528160.png" alt="image-20210512062528160"></p>
+<p>蓝色代表成功了，具体信息可以点击<code>控制台输出</code>这里查看：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512062624300.png" alt="image-20210512062624300"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512062815045.png" alt="image-20210512062815045"></p>
+<ul>
+<li>jenkins 下载下来的代码存放的位置：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/lib/jenkins/workspace/xuegod-web-test1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512062907324.png" alt="image-20210512062907324"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512063034524.png" alt="image-20210512063034524"></p>
+<h5 id="2-4-4-6-将代码发布到web服务器"><a href="#2-4-4-6-将代码发布到web服务器" class="headerlink" title="2.4.4.6  将代码发布到web服务器"></a>2.4.4.6  将代码发布到web服务器</h5><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515113426626.png" alt="image-20210515113426626"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511075244801-1621049632524.png" alt="image-20210511075244801"></p>
+<h6 id="2-4-4-6-1-安装apache服务"><a href="#2-4-4-6-1-安装apache服务" class="headerlink" title="2.4.4.6.1 安装apache服务"></a>2.4.4.6.1 安装apache服务</h6><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@GitLab ~]<span class="comment"># yum install -y httpd[root@GitLab ~]# vim /etc/httpd/conf/httpd.conf将第42行 改：Listen 80为：Listen 81[root@GitLab ~]# systemctl restart httpd</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>本地笔记本访问测试(测试成功)：<a target="_blank" rel="noopener" href="http://172.29.9.10:81/">http://172.29.9.10:81/</a> </p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515113910819.png" alt="image-20210515113910819"></p>
+<ul>
+<li>还有个事儿：如果使用rsync的话，还要使用免交互功能。</li>
+</ul>
+<p>注意：<strong>这里要对自己做免密，否则在使用scp命令时会报错，导致发布代码会出现问题</strong>。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512064906632.png" alt="image-20210512064906632"></p>
+<p>在其他终端上测试，ssh自己是不需要密码的：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512064940291.png" alt="image-20210512064940291"></p>
+<h6 id="2-4-4-6-1-现在，我们就发布一下把-手动更新"><a href="#2-4-4-6-1-现在，我们就发布一下把-手动更新" class="headerlink" title="2.4.4.6.1 现在，我们就发布一下把(手动更新)"></a>2.4.4.6.1 现在，我们就发布一下把(手动更新)</h6><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512065129329.png" alt="image-20210512065129329"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512065150788.png" alt="image-20210512065150788"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512065541579.png" alt="image-20210512065541579"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512065556617.png" alt="image-20210512065556617"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512065915282.png" alt="image-20210512065915282"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;当前WORKSPACE工作目录&#x27;</span><span class="built_in">pwd</span><span class="comment">#在构建时，默认会直接切换到workspace目录，所以可以直接将当前目录中的内容赋值给被部署的服务器。scp -r ./* root@172.29.9.10:/var/www/html/</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512070239386.png" alt="image-20210512070239386"></p>
+<p>立即构建并查看效果：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512070343353.png" alt="image-20210512070343353"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512070500520.png" alt="image-20210512070500520"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512070615570.png" alt="image-20210512070615570"></p>
+<p>这里可以测试下效果：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512070752585.png" alt="image-20210512070752585"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512070851702.png" alt="image-20210512070851702"></p>
+<p>如果是2台服务器呢，该怎么办呢？</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512071119745.png" alt="image-20210512071119745"></p>
+<h3 id="2-5-实现gitlab更新代码后自动触发Jenkins进行部署"><a href="#2-5-实现gitlab更新代码后自动触发Jenkins进行部署" class="headerlink" title="2.5 实现gitlab更新代码后自动触发Jenkins进行部署"></a>2.5 实现gitlab更新代码后自动触发Jenkins进行部署</h3><p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512072851912.png" alt="image-20210512072851912"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210511075244801-1621050930963.png" alt="image-20210511075244801"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512073212198.png" alt="image-20210512073212198"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512073225727.png" alt="image-20210512073225727"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512073800323.png" alt="image-20210512073800323"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512073819796.png" alt="image-20210512073819796"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512073842296.png" alt="image-20210512073842296"></p>
+<p>API接口：</p>
+<p><a target="_blank" rel="noopener" href="http://172.29.9.10:198/project/xuegod-web-test1">http://172.29.9.10:198/project/xuegod-web-test1</a></p>
+<p>16542cd6c9b6a01349bf3bce7043e732</p>
+<p>点击保存：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512073909698.png" alt="image-20210512073909698"></p>
+<ul>
+<li>然后在gitlab上做一些事儿</li>
+</ul>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512074015418.png" alt="image-20210512074015418"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512074115388.png" alt="image-20210512074115388"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512074318752.png" alt="image-20210512074318752"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512074402516.png" alt="image-20210512074402516"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512074413298.png" alt="image-20210512074413298"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512074431966.png" alt="image-20210512074431966"></p>
+<p>这边已集成的有很多：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512074605972.png" alt="image-20210512074605972"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512074753933.png" alt="image-20210512074753933"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512074810045.png" alt="image-20210512074810045"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512074826915.png" alt="image-20210512074826915"></p>
+<p>这边可以测试下：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512074952313.png" alt="image-20210512074952313"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512075006095.png" alt="image-20210512075006095"></p>
+<p>gitlab提示成功，jenkins上查看任务是否触发。</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512075118086.png" alt="image-20210512075118086"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512075153047.png" alt="image-20210512075153047"></p>
+<p>我们可以再次在gitlab上测试推送，再在jenkins上查看效果：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512075356790.png" alt="image-20210512075356790"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512075415793.png" alt="image-20210512075415793"></p>
+<ul>
+<li>测试gitlab触发jenkins自动 部署</li>
+</ul>
+<p>向git服务器提交代码，验证是否可以自动 部署：</p>
+<p>我是这个项目的维护者：</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512075733830.png" alt="image-20210512075733830"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512075912404.png" alt="image-20210512075912404"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512080047886.png" alt="image-20210512080047886"></p>
+<p>此时代码已经推送成功了，以前我们是上gitlab去看的，现在直接去查看httpd服务即可(生产上一般是先到测试环境的)</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512080254275.png" alt="image-20210512080254275"></p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210512080339556.png" alt="image-20210512080339556"></p>
+<p>此时，all实验已经完成，关机做一个快照！</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515121315470.png" alt="image-20210515121315470"></p>
+<h2 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h2><p>​    以上就是关于企业级DevOPS之GitLab结合Jenkins快速构建CICD持续集成平台的一个完整实验了，大家可以参照以上实战过程自己动手操作一遍，相信你会有不一样的收获！</p>
+<p><img src="https://bucket-hg.oss-cn-shanghai.aliyuncs.com/img/image-20210515125643096.png" alt="image-20210515125643096"></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">一个人</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://www.onlyonexl.cn/2021/05/17/1-%E5%AE%9E%E6%88%98-%E4%BC%81%E4%B8%9A%E7%BA%A7DevOPS%E4%B9%8BGitLab%E7%BB%93%E5%90%88Jenkins%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BACICD%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E5%B9%B3%E5%8F%B0-%E6%B5%8B%E8%AF%95%E6%88%90%E5%8A%9F-%E8%BF%87%E7%A8%8B%E8%B6%85%E8%AF%A6%E7%BB%86-20210513/">https://www.onlyonexl.cn/2021/05/17/1-%E5%AE%9E%E6%88%98-%E4%BC%81%E4%B8%9A%E7%BA%A7DevOPS%E4%B9%8BGitLab%E7%BB%93%E5%90%88Jenkins%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BACICD%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E5%B9%B3%E5%8F%B0-%E6%B5%8B%E8%AF%95%E6%88%90%E5%8A%9F-%E8%BF%87%E7%A8%8B%E8%B6%85%E8%AF%A6%E7%BB%86-20210513/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">一个人</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/CI-CD/">
+                                    <span class="chip bg-color">CI/CD</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/05/18/%E6%88%91%E5%A6%82%E6%9E%9C%E7%88%B1%E4%BD%A0/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="我如果爱你.md">
+                        
+                        <span class="card-title">我如果爱你.md</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-05-18
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%83%85%E6%84%9F/" class="post-category">
+                                    情感
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%83%85%E6%84%9F/">
+                        <span class="chip bg-color">情感</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                本篇&nbsp;<i class="far fa-dot-circle"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/05/17/1-%E5%AE%9E%E6%88%98-%E4%BC%81%E4%B8%9A%E7%BA%A7DevOPS%E4%B9%8BGitLab%E7%BB%93%E5%90%88Jenkins%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BACICD%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E5%B9%B3%E5%8F%B0-%E6%B5%8B%E8%AF%95%E6%88%90%E5%8A%9F-%E8%BF%87%E7%A8%8B%E8%B6%85%E8%AF%A6%E7%BB%86-20210513/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="1 实战-企业级DevOPS之GitLab结合Jenkins快速构建CICD持续集成平台(测试成功-过程超详细)-20210513">
+                        
+                        <span class="card-title">1 实战-企业级DevOPS之GitLab结合Jenkins快速构建CICD持续集成平台(测试成功-过程超详细)-20210513</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CI-CD/" class="post-category">
+                                    CI/CD
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/CI-CD/">
+                        <span class="chip bg-color">CI/CD</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">一个人</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/OnlyOnexl" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:2675263825@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2675263825" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2675263825" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
